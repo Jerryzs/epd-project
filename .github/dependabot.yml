@@ -9,5 +9,5 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
+    # reviewers:
       # - "Jerryzs"
