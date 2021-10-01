@@ -39,6 +39,25 @@ const InstructionField = ({
     mutate: () => Promise.resolve(),
   }
 
+  const focus = () => {
+    const fakeInput = document.createElement('input')
+    fakeInput.setAttribute('type', 'text')
+    fakeInput.setAttribute('readonly', 'true')
+    fakeInput.style.position = 'absolute'
+    fakeInput.style.opacity = '0'
+    fakeInput.style.height = '0'
+    fakeInput.style.fontSize = '16px'
+
+    document.body.prepend(fakeInput)
+
+    fakeInput.focus()
+
+    setTimeout(() => {
+      input.current?.focus()
+      fakeInput.remove()
+    }, 1000)
+  }
+
   useEffect(() => {
     if (alwaysEditable) input.current?.focus()
   }, [])
@@ -67,7 +86,7 @@ const InstructionField = ({
   const handlePlaceholderClick = (): void => {
     setEdit(true)
     if (alwaysEditable) {
-      setTimeout(() => input.current?.focus(), 100)
+      focus()
     }
   }
 
