@@ -14,5 +14,13 @@ declare global {
       message: string
       data: T | null
     }
+
+    type InstructionGET = {
+      instruction: string
+    }
+
+    type InstructionPOST = {
+      id: string
+    }
   }
 }
