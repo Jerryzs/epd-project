@@ -1,0 +1,36 @@
+.wrapper {
+  position: relative;
+  text-align: left;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  border-radius: 16px;
+  background-color: #dddddd;
+  margin: 36px 0;
+  padding: 24px;
+  min-height: calc(2.4rem + 48px);
+
+  a {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 1.25rem;
+    line-height: 0;
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 24px;
+    color: #888888;
+  }
+
+  .input {
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
