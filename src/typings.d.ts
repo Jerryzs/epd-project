@@ -17,6 +17,7 @@ declare global {
 
     type InstructionGET = {
       instruction: string
+      done: 0 | 1
     }
 
     type InstructionPOST = {

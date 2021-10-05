@@ -13,16 +13,20 @@ import type { SWRResponse } from 'swr'
 
 const InstructionField = ({
   initial = '',
+  done = false,
   swr,
   alwaysEditable = false,
   timeout = 2000,
+  onDone,
   onSave,
   onStateChange,
 }: {
   initial?: string
+  done?: boolean
   swr?: SWRResponse<API.InstructionGET, API.BaseResponse<null>>
   alwaysEditable?: boolean
   timeout?: number
+  onDone?: (done: boolean) => void
   onSave?: (text: string) => void
   onStateChange?: (editState: boolean) => void
 }): JSX.Element => {
@@ -33,9 +37,10 @@ const InstructionField = ({
   const [content, setContent] = useState(initial)
   const [empty, setEmpty] = useState(content === '')
   const [edit, setEdit] = useState(alwaysEditable)
+  const [strike, setStrike] = useState(done)
 
   const { data, mutate } = swr ?? {
-    data: { instruction: content },
+    data: { instruction: content, done: strike === true ? 1 : 0 },
     mutate: () => Promise.resolve(),
   }
 
@@ -55,7 +60,7 @@ const InstructionField = ({
     setTimeout(() => {
       input.current?.focus()
       fakeInput.remove()
-    }, 1000)
+    }, 100)
   }
 
   useEffect(() => {
@@ -68,7 +73,8 @@ const InstructionField = ({
       setContent(text)
       setEmpty(text === '')
     }
-  }, [data])
+    setStrike(!!(data?.done ?? 0))
+  }, [data, edit])
 
   useEffect(() => {
     onStateChange?.(edit)
@@ -87,6 +93,13 @@ const InstructionField = ({
     setEdit(true)
     if (alwaysEditable) {
       focus()
+    }
+  }
+
+  const handleContentClick = (): void => {
+    if (!edit) {
+      onDone?.(!strike)
+      setStrike(!strike)
     }
   }
 
@@ -156,8 +169,13 @@ const InstructionField = ({
       <div
         ref={input}
         className={styles.input}
+        style={{
+          textDecorationLine: !edit && strike ? 'line-through' : 'none',
+          userSelect: edit ? 'contain' : 'none',
+        }}
         contentEditable={edit}
         suppressContentEditableWarning
+        onClick={handleContentClick}
         onInput={handleContentInput}
         onBlur={handleContentBlur}
         onKeyDown={handleContentKeyDown}

@@ -27,6 +27,8 @@
   }
 
   .input {
+    text-decoration-thickness: 2px;
+
     &:focus,
     &:focus-visible {
       outline: none;

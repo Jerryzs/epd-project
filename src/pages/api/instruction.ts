@@ -7,6 +7,7 @@ const ID_LENGTH = 6
 type Row = {
   id: string
   instruction: string
+  done: number
 }
 
 const handler = async (
@@ -46,6 +47,7 @@ const handler = async (
           message: '',
           data: {
             instruction: result[0].instruction,
+            done: result[0].done === 0 ? 0 : 1,
           },
         })
       }
@@ -54,7 +56,7 @@ const handler = async (
     }
 
     if (req.method === 'POST') {
-      const ins = JSON.parse(req.body ?? '').instruction
+      const { done, instruction: ins } = JSON.parse(req.body ?? '')
 
       if (id === '') {
         let existing: Row[]
@@ -102,10 +104,17 @@ const handler = async (
         return
       }
 
-      await db.query<Row[]>(
-        `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = '${id}'`,
-        ins
-      )
+      if (done !== undefined && done in [0, 1]) {
+        await db.query(
+          `UPDATE \`instruction\` SET \`done\` = ${done} WHERE \`id\` = ?`,
+          id
+        )
+      } else {
+        await db.query(
+          `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
+          [ins, id]
+        )
+      }
 
       res.status(200).json({
         success: true,
