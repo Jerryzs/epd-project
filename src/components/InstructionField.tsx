@@ -30,19 +30,19 @@ const InstructionField = ({
   onSave?: (text: string) => void
   onStateChange?: (editState: boolean) => void
 }): JSX.Element => {
+  const { data, mutate } = swr ?? {
+    data: { instruction: initial, done: done === true ? 1 : 0 },
+    mutate: () => Promise.resolve(),
+  }
+
   const input = useRef<HTMLDivElement>(null)
   const final = useRef<string>()
   const saveTimeout = useRef<NodeJS.Timeout>()
 
-  const [content, setContent] = useState(initial)
+  const [content, setContent] = useState(data?.instruction)
   const [empty, setEmpty] = useState(content === '')
   const [edit, setEdit] = useState(alwaysEditable)
-  const [strike, setStrike] = useState(done)
-
-  const { data, mutate } = swr ?? {
-    data: { instruction: content, done: strike === true ? 1 : 0 },
-    mutate: () => Promise.resolve(),
-  }
+  const [strike, setStrike] = useState(!!data?.done)
 
   const focus = () => {
     const fakeInput = document.createElement('input')
