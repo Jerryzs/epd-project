@@ -8,13 +8,14 @@ import type { GetServerSideProps } from 'next'
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = String(params?.id ?? '')
-  const { instruction } = await $0.fetch<API.InstructionGET>(
+  const { instruction, done } = await $0.fetch<API.InstructionGET>(
     `${$0.api.instruction}?id=${id}`
   )
   return {
     props: {
       id,
       instruction,
+      done,
     },
   }
 }
@@ -22,9 +23,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const InstructionPage = ({
   id,
   instruction,
+  done,
 }: {
   id: string
   instruction: string
+  done: 0 | 1
 }): JSX.Element => {
   const [edit, setEdit] = useState(false)
 
@@ -33,7 +36,7 @@ const InstructionPage = ({
     $0.fetch,
     {
       refreshInterval: 1000,
-      fallbackData: { instruction },
+      fallbackData: { instruction, done },
       isPaused: () => edit,
     }
   )
@@ -45,6 +48,12 @@ const InstructionPage = ({
       <div className={styles.wrapper}>
         <InstructionField
           swr={insSWR}
+          onDone={(done) => {
+            fetch(`${$0.api.instruction}?id=${id}`, {
+              method: 'POST',
+              body: JSON.stringify({ done: done ? 1 : 0 }),
+            })
+          }}
           onSave={(text) => {
             fetch(`${$0.api.instruction}?id=${id}`, {
               method: 'POST',
