@@ -1,5 +1,7 @@
 const url = process.env.NEXT_PUBLIC_URL ?? ''
 
+const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890-_='
+
 const GlobalObject = {
   url,
 
@@ -19,6 +21,14 @@ const GlobalObject = {
         }
         return res.data as T
       }),
+
+  getRandomId: (len: number, chars = RANDOM_CHARS): string => {
+    let code = ''
+    for (let i = 0; i < len; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return code
+  },
 }
 
 export default GlobalObject
