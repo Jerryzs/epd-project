@@ -10,8 +10,15 @@ const GlobalObject = {
     user: url + '/api/user',
     auth: {
       login: url + '/api/auth/login',
+      register: url + '/api/auth/register',
       verify: url + '/api/auth/verify',
     },
+  },
+
+  regex: {
+    email:
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
   },
 
   fetch: async <T extends JSONObject | null = null>(
