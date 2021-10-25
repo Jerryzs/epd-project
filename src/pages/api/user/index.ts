@@ -54,19 +54,18 @@ const handler = async (
       })
     }
 
-    return res
-      .status(200)
-      .setHeader('Set-Cookie', session.cookie(sid))
-      .json({
-        success: true,
-        message: '',
-        data: {
-          id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
-      })
+    res.setHeader('Set-Cookie', session.cookie(sid))
+
+    return res.status(200).json({
+      success: true,
+      message: '',
+      data: {
+        id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    })
   }
 
   return res.status(405).json({

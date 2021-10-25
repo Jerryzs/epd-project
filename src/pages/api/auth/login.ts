@@ -71,7 +71,9 @@ const handler = async (
 
     const sid = await session.create(result.id)
 
-    return res.status(200).setHeader('Set-Cookie', session.cookie(sid)).json({
+    res.setHeader('Set-Cookie', session.cookie(sid))
+
+    return res.status(200).json({
       success: true,
       message: '',
       data: null,
