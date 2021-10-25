@@ -17,7 +17,7 @@ const GlobalObject = {
       .then(async (res): Promise<API.BaseResponse<T>> => await res.json())
       .then((res) => {
         if (!res.success) {
-          throw Error(res.message)
+          throw res.message
         }
         return res.data as T
       }),
