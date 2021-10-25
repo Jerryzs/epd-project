@@ -8,6 +8,9 @@ const GlobalObject = {
   api: {
     instruction: url + '/api/instruction',
     user: url + '/api/user',
+    auth: {
+      login: url + '/api/auth/login',
+    },
   },
 
   fetch: async <T extends JSONObject | null = null>(
