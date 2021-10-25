@@ -1,0 +1,95 @@
+.wrapper {
+  a {
+    text-decoration: none;
+
+    &:focus-visible {
+      text-decoration: underline solid 1px !important;
+      outline: none;
+    }
+  }
+
+  .loginBox {
+    margin: 24px auto;
+    padding: 20px;
+    max-width: 500px;
+    border: 1px solid #000000;
+    border-radius: 12px;
+
+    .error {
+      padding: 6px 12px;
+      margin-bottom: 8px;
+    }
+
+    > span {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    > form {
+      > input {
+        margin-bottom: 8px;
+      }
+
+      > button {
+        width: 100%;
+
+        .spinner {
+          height: 1rem;
+          width: 1rem;
+        }
+      }
+
+      .role {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+
+        > label {
+          flex: 1;
+
+          &:not(:last-of-type) {
+            margin-right: 8px;
+          }
+        }
+
+        // > input:focus + label,
+        //   label:focus {
+        //   box-shadow: none;
+        // }
+      }
+
+      .emailSuggestion {
+        text-align: right;
+        margin-bottom: 8px;
+
+        > a {
+          font-style: italic;
+        }
+      }
+
+      .verifyActions {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+        font-size: 0.75rem;
+
+        > a {
+          flex: 1;
+
+          &:not(:last-child) {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+
+    > a {
+      display: inline-block;
+      width: 100%;
+      padding: 6px 0;
+    }
+  }
+}
