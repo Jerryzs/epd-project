@@ -1,4 +1,4 @@
-import * as db from '../../db'
+import db from '../../libs/db'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
