@@ -10,6 +10,7 @@ const GlobalObject = {
     user: url + '/api/user',
     auth: {
       login: url + '/api/auth/login',
+      verify: url + '/api/auth/verify',
     },
   },
 
