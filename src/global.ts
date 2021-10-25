@@ -29,6 +29,14 @@ const GlobalObject = {
     }
     return code
   },
+
+  auth: (user?: API.UserGET): user is User => {
+    return user !== undefined && user.id !== -1
+  },
+
+  noAuth: (user?: API.UserGET): user is NoUser => {
+    return user !== undefined && user.id === -1
+  },
 }
 
 export default GlobalObject
