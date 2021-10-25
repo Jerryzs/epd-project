@@ -7,6 +7,7 @@ const GlobalObject = {
 
   api: {
     instruction: url + '/api/instruction',
+    user: url + '/api/user',
   },
 
   fetch: async <T extends JSONObject | null = null>(

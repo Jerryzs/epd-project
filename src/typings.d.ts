@@ -8,6 +8,17 @@ declare global {
   type JSONObject = { [member: string]: JSONValue }
   type JSONArray = Array<JSONValue>
 
+  type User = {
+    id: number
+    name: string
+    email: string
+    role: 'student' | 'teacher'
+  }
+
+  type NoUser = {
+    id: -1
+  }
+
   namespace API {
     interface BaseResponse<T extends JSONObject | null = null> {
       success: boolean
@@ -23,5 +34,7 @@ declare global {
     type InstructionPOST = {
       id: string
     }
+
+    type UserGET = User | NoUser
   }
 }
