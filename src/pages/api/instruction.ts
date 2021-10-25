@@ -1,4 +1,4 @@
-import * as db from '../../db'
+import db from '../../libs/db'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -21,13 +21,11 @@ const handler = async (
   try {
     if (req.method === 'GET') {
       if (id.match(/^[a-z0-9]{6}$/) === null) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: 'id format incorrect',
           data: null,
         })
-
-        return
       }
 
       const result = await db.query<Row[]>(
@@ -36,13 +34,13 @@ const handler = async (
       )
 
       if (result.length === 0) {
-        res.status(404).json({
+        return res.status(404).json({
           success: false,
           message: 'id not found',
           data: null,
         })
       } else {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: '',
           data: {
@@ -51,8 +49,6 @@ const handler = async (
           },
         })
       }
-
-      return
     }
 
     if (req.method === 'POST') {
@@ -83,25 +79,21 @@ const handler = async (
           ins
         )
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: '',
           data: {
             id: randId,
           },
         })
-
-        return
       }
 
       if (id.match(/^[a-z0-9]{6}$/) === null) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: 'id format incorrect',
           data: null,
         })
-
-        return
       }
 
       if (done !== undefined && done in [0, 1]) {
@@ -116,23 +108,25 @@ const handler = async (
         )
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: '',
         data: null,
       })
-
-      return
     }
   } catch (e) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: (e as Error).message,
+      message: String(e),
       data: null,
     })
   }
 
-  res.status(405)
+  return res.status(405).json({
+    success: false,
+    message: 'Not allowed.',
+    data: null,
+  })
 }
 
 export default handler
