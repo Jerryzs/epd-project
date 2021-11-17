@@ -96,9 +96,9 @@ const handler = async (
 
     await db.query(
       `INSERT
-      INTO \`user\` (\`name\`, \`email\`, \`role\`, \`password\`)
-      VALUES (?, ?, ?, ?)`,
-      [name, email, role, hash]
+      INTO \`user\` (\`name\`, \`email\`, \`role\`)
+      VALUES (?, ?, ?)`,
+      [name, email, role]
     )
 
     const user = (
@@ -107,6 +107,13 @@ const handler = async (
         email
       )
     )[0].id
+
+    await db.query(
+      `INSERT
+      INTO \`pass\` (\`user\`, \`password\`)
+      VALUES (?, ?)`,
+      [user, hash]
+    )
 
     const sid = await session.create(user)
 

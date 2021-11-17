@@ -9,8 +9,11 @@ type Form = {
   password: string
 }
 
-type Result = {
+type User = {
   id: number
+}
+
+type Pass = {
   password: string
 }
 
@@ -33,25 +36,18 @@ const handler = async (
       })
     }
 
-    const id = parseInt(user)
+    let id: number = parseInt(user)
 
-    let result
-    if (!isNaN(id))
-      result = (
-        await db.query<Result[]>(
-          `SELECT \`id\`, \`password\` FROM \`user\` WHERE \`id\` = ?`,
-          id
-        )
-      )[0]
-    else
-      result = (
-        await db.query<Result[]>(
-          `SELECT \`id\`, \`password\` FROM \`user\` WHERE \`email\` = ?`,
+    if (isNaN(id)) {
+      id = (
+        await db.query<User[]>(
+          `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
           user
         )
-      )[0]
+      )[0]?.id
+    }
 
-    if (result === undefined) {
+    if (id === undefined) {
       return res.status(400).json({
         success: false,
         message: 'User or password does not exist.',
@@ -59,7 +55,22 @@ const handler = async (
       })
     }
 
-    const match = await bcrypt.compare(password, result.password)
+    const pass = (
+      await db.query<Pass[]>(
+        `SELECT \`password\` FROM \`pass\` WHERE \`user\` = ?`,
+        id
+      )
+    )[0]?.password
+
+    if (pass === undefined) {
+      return res.status(500).json({
+        success: false,
+        message: 'Unexpected error occured.',
+        data: null,
+      })
+    }
+
+    const match = await bcrypt.compare(password, pass)
 
     if (!match) {
       return res.status(400).json({
@@ -69,7 +80,7 @@ const handler = async (
       })
     }
 
-    const sid = await session.create(result.id)
+    const sid = await session.create(id)
 
     res.setHeader('Set-Cookie', session.cookie(sid))
 
