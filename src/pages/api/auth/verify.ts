@@ -39,7 +39,7 @@ const handler = async (
 
     try {
       const result = await db.query<{ expire: number }[]>(
-        `SELECT \`expire\` FROM \`verification_code\` WHERE \`user\` = ?`,
+        `SELECT \`expire\` FROM \`verification\` WHERE \`user\` = ?`,
         email
       )
 
@@ -92,13 +92,10 @@ const handler = async (
     try {
       const expiration = now() + 305
 
-      await db.query(
-        `DELETE FROM \`verification_code\` WHERE \`user\` = ?`,
-        email
-      )
+      await db.query(`DELETE FROM \`verification\` WHERE \`user\` = ?`, email)
 
       await db.query(
-        `INSERT INTO \`verification_code\` (\`code\`, \`user\`, \`expire\`) VALUES ('${code}', ?, ${expiration})`,
+        `INSERT INTO \`verification\` (\`code\`, \`user\`, \`expire\`) VALUES ('${code}', ?, ${expiration})`,
         email
       )
     } catch (e) {

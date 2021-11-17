@@ -72,7 +72,7 @@ const handler = async (
     }
 
     const verify = await db.query<Verify[]>(
-      `SELECT * FROM \`verification_code\` WHERE \`code\` = ?`,
+      `SELECT * FROM \`verification\` WHERE \`code\` = ?`,
       code
     )
 
