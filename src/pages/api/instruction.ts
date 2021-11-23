@@ -56,12 +56,14 @@ const handler = async (
         })
       }
 
-      const result = await db.query<Row[]>(
-        `SELECT * FROM \`instruction\` WHERE \`id\` = ?`,
-        id
-      )
+      const result = (
+        await db.query<Row[]>(
+          `SELECT * FROM \`instruction\` WHERE \`id\` = ?`,
+          id
+        )
+      )[0]
 
-      if (result.length === 0) {
+      if (result === undefined) {
         return res.status(404).json({
           success: false,
           message: 'id not found',
@@ -71,10 +73,7 @@ const handler = async (
         return res.status(200).json({
           success: true,
           message: '',
-          data: {
-            instruction: result[0].instruction,
-            done: result[0].done === 0 ? 0 : 1,
-          },
+          data: result,
         })
       }
     }
