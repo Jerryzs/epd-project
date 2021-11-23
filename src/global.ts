@@ -9,6 +9,7 @@ const GlobalObject = {
     instruction: url + '/api/instruction',
     user: {
       get: url + '/api/user',
+      classrooms: url + '/api/user/classrooms',
     },
     auth: {
       login: url + '/api/auth/login',

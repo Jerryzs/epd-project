@@ -19,6 +19,12 @@ declare global {
     id: null
   }
 
+  type Classroom = {
+    id: string
+    name: string
+    instructor_name: string
+  }
+
   namespace API {
     interface BaseResponse<T extends JSONObject | null = null> {
       success: boolean
@@ -36,5 +42,11 @@ declare global {
     }
 
     type UserGET = User | NoUser
+
+    namespace User {
+      type ClassroomsGET = {
+        classrooms: Classroom[]
+      }
+    }
   }
 }
