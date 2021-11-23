@@ -46,7 +46,8 @@ const session = {
     await db.query(
       `INSERT
       INTO \`session\` (\`id\`, \`user\`, \`expire\`)
-      VALUES ('${sid}', ${user}, ${expire})`
+      VALUES (?, ?, ?)`,
+      [sid, user, expire]
     )
 
     return sid

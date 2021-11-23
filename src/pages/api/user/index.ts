@@ -35,9 +35,7 @@ const handler = async (
     }
 
     const user = (
-      await db.query<User[]>(
-        `SELECT * FROM \`user\` WHERE \`id\` = ${id}`
-      )
+      await db.query<User[]>(`SELECT * FROM \`user\` WHERE \`id\` = ?`, id)
     )[0]
 
     if (user === undefined) {
