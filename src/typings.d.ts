@@ -33,8 +33,9 @@ declare global {
     }
 
     type InstructionGET = {
+      id: string
       instruction: string
-      done: 0 | 1
+      status: 'todo' | 'current' | 'done'
     }
 
     type InstructionPOST = {

@@ -52,7 +52,7 @@ const handler = async (
     }
 
     if (req.method === 'POST') {
-      const { done, instruction: ins } = JSON.parse(req.body ?? '')
+      const { status, instruction } = JSON.parse(req.body ?? '')
 
       if (id === '') {
         let existing: Row[]
@@ -96,15 +96,15 @@ const handler = async (
         })
       }
 
-      if (done !== undefined && done in [0, 1]) {
+      if (status !== undefined && status in ['todo', 'current', 'done']) {
         await db.query(
-          `UPDATE \`instruction\` SET \`done\` = ${done} WHERE \`id\` = ?`,
-          id
+          `UPDATE \`instruction\` SET \`status\` = ? WHERE \`id\` = ?`,
+          [status, id]
         )
       } else {
         await db.query(
           `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
-          [ins, id]
+          [instruction, id]
         )
       }
 
