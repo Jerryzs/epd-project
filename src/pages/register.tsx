@@ -85,14 +85,11 @@ const Register = ({
     }
   }, [init])
 
-  useEffect(() => {
-    setMessage(error)
-  }, [error])
-
   const verify = (email: string): void => {
     $0.fetch(`${$0.api.auth.verify}?email=${encodeURIComponent(email)}`)
       .then(() => {
         setState(1)
+        setMessage(null)
       })
       .catch((e) => {
         setMessage(e as string)
