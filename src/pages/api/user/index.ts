@@ -3,12 +3,6 @@ import session from '../../../libs/session'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type User = {
-  name: string
-  email: string
-  role: 'student' | 'teacher'
-}
-
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<API.BaseResponse<API.UserGET>>
@@ -42,7 +36,7 @@ const handler = async (
 
     const user = (
       await db.query<User[]>(
-        `SELECT \`name\`, \`email\`, \`role\` FROM \`user\` WHERE \`id\` = ${id}`
+        `SELECT * FROM \`user\` WHERE \`id\` = ${id}`
       )
     )[0]
 
