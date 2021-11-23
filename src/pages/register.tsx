@@ -135,7 +135,8 @@ const Register = ({
     setWait(60)
   }
 
-  const handleChangeEmailClick = () => {
+  const handleChangeEmailClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
     setState(0)
   }
 
