@@ -3,11 +3,39 @@ import db from '../../libs/db'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const ID_LENGTH = 6
+const ID_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
 type Row = {
   id: string
   instruction: string
   done: number
+}
+
+const instructionExists = async (id: string): Promise<boolean> => {
+  const results = await db.query<Row[]>(
+    `SELECT *
+    FROM \`instruction\`
+    WHERE \`id\` = ?`,
+    id
+  )
+  return results.length !== 0
+}
+
+const createInstruction = async (task = ''): Promise<string> => {
+  let randId: string
+
+  do {
+    randId = $0.getRandomId(ID_LENGTH, ID_CHARS)
+  } while (!instructionExists(randId))
+
+  await db.query(
+    `INSERT
+    INTO \`instruction\` (\`id\`, \`instruction\`)
+    VALUES (?, ?)`,
+    [randId, task]
+  )
+
+  return randId
 }
 
 const handler = async (
@@ -55,29 +83,7 @@ const handler = async (
       const { status, instruction } = JSON.parse(req.body ?? '')
 
       if (id === '') {
-        let existing: Row[]
-        let randId: string
-
-        do {
-          randId = (() => {
-            let id = ''
-            const set = 'abcdefghijklmnopqrstuvwxyz0123456789'
-            const len = set.length
-            for (let i = 0; i < ID_LENGTH; i++) {
-              id += set.charAt(Math.floor(Math.random() * len))
-            }
-            return id
-          })()
-
-          existing = await db.query<Row[]>(
-            `SELECT * FROM \`instruction\` WHERE \`id\` = '${randId}'`
-          )
-        } while (existing.length !== 0)
-
-        await db.query(
-          `INSERT INTO \`instruction\` (\`id\`, \`instruction\`) VALUES ('${randId}', ?)`,
-          ins
-        )
+        const randId = await createInstruction(instruction)
 
         return res.status(200).json({
           success: true,
@@ -128,5 +134,7 @@ const handler = async (
     data: null,
   })
 }
+
+export { createInstruction, instructionExists }
 
 export default handler
