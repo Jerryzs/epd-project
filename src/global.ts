@@ -17,6 +17,9 @@ const GlobalObject = {
       register: url + '/api/auth/register',
       verify: url + '/api/auth/verify',
     },
+    classroom: {
+      roster: url + '/api/classroom/roster',
+    },
   },
 
   regex: {

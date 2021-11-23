@@ -49,5 +49,12 @@ declare global {
         classrooms: Classroom[]
       }
     }
+
+    namespace Classroom {
+      type RosterGET = {
+        classroom: Classroom
+        members: User[]
+      }
+    }
   }
 }
