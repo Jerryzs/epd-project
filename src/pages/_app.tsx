@@ -16,7 +16,7 @@ if (typeof window !== 'undefined') {
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  const { data } = useSWR<API.UserGET>($0.api.user, $0.fetch)
+  const { data } = useSWR<API.UserGET>($0.api.user.get, $0.fetch)
 
   return (
     <>

@@ -7,7 +7,9 @@ const GlobalObject = {
 
   api: {
     instruction: url + '/api/instruction',
-    user: url + '/api/user',
+    user: {
+      get: url + '/api/user',
+    },
     auth: {
       login: url + '/api/auth/login',
       logout: url + '/api/auth/logout',

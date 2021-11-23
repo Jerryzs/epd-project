@@ -27,8 +27,7 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
       body: JSON.stringify(Object.fromEntries(form)),
     })
       .then(async () => {
-        await mutate($0.api.user)
-        router.replace('/dashboard')
+        await mutate($0.api.user.get)
       })
       .catch((e) => {
         setMessage(e as string)
