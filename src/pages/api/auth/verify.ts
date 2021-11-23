@@ -44,7 +44,7 @@ const handler = async (
       )
 
       if (result.length !== 0) {
-        const diff = now() + 215 - result[0].expire
+        const diff = now() + 255 - result[0].expire
         if (diff < 0) {
           return res.status(400).json({
             success: false,
