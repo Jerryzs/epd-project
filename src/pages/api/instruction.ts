@@ -48,14 +48,6 @@ const handler = async (
 
   try {
     if (req.method === 'GET') {
-      if (id.match(/^[a-z0-9]{6}$/) === null) {
-        return res.status(400).json({
-          success: false,
-          message: 'id format incorrect',
-          data: null,
-        })
-      }
-
       const result = (
         await db.query<Row[]>(
           `SELECT * FROM \`instruction\` WHERE \`id\` = ?`,
@@ -64,9 +56,9 @@ const handler = async (
       )[0]
 
       if (result === undefined) {
-        return res.status(404).json({
+        return res.status(400).json({
           success: false,
-          message: 'id not found',
+          message: 'Instruction not found.',
           data: null,
         })
       } else {
@@ -90,14 +82,6 @@ const handler = async (
           data: {
             id: randId,
           },
-        })
-      }
-
-      if (id.match(/^[a-z0-9]{6}$/) === null) {
-        return res.status(400).json({
-          success: false,
-          message: 'id format incorrect',
-          data: null,
         })
       }
 
