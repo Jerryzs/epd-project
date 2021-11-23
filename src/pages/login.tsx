@@ -15,7 +15,9 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
   const [loading, setLoading] = useState(false)
 
   if ($0.auth(user)) {
-    router.replace('/dashboard')
+    user.role === 'student'
+      ? router.replace('/me')
+      : router.replace('/classroom')
   }
 
   const handleLoginSubmit = (e: FormEvent<HTMLFormElement>) => {

@@ -63,7 +63,9 @@ const Register = ({
   const [message, setMessage] = useState<string | null>(error)
 
   if ($0.auth(user)) {
-    router.replace('/dashboard')
+    user.role === 'student'
+      ? router.replace('/me')
+      : router.replace('/classroom')
   }
 
   useEffect(() => {
