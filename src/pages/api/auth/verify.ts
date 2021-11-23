@@ -39,12 +39,12 @@ const handler = async (
 
     try {
       const result = await db.query<{ expire: number }[]>(
-        `SELECT \`expire\` FROM \`verification_code\` WHERE \`user\` = ?`,
+        `SELECT \`expire\` FROM \`verification\` WHERE \`user\` = ?`,
         email
       )
 
       if (result.length !== 0) {
-        const diff = now() + 215 - result[0].expire
+        const diff = now() + 255 - result[0].expire
         if (diff < 0) {
           return res.status(400).json({
             success: false,
@@ -93,13 +93,17 @@ const handler = async (
       const expiration = now() + 305
 
       await db.query(
-        `DELETE FROM \`verification_code\` WHERE \`user\` = ?`,
+        `DELETE
+        FROM \`verification\`
+        WHERE \`user\` = ?`,
         email
       )
 
       await db.query(
-        `INSERT INTO \`verification_code\` (\`code\`, \`user\`, \`expire\`) VALUES ('${code}', ?, ${expiration})`,
-        email
+        `INSERT
+        INTO \`verification\` (\`code\`, \`user\`, \`expire\`)
+        VALUES (?, ?, ?)`,
+        [code, email, expiration]
       )
     } catch (e) {
       console.log(e)

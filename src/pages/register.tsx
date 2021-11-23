@@ -63,7 +63,9 @@ const Register = ({
   const [message, setMessage] = useState<string | null>(error)
 
   if ($0.auth(user)) {
-    router.replace('/dashboard')
+    user.role === 'student'
+      ? router.replace('/me')
+      : router.replace('/classroom')
   }
 
   useEffect(() => {
@@ -83,14 +85,11 @@ const Register = ({
     }
   }, [init])
 
-  useEffect(() => {
-    setMessage(error)
-  }, [error])
-
   const verify = (email: string): void => {
     $0.fetch(`${$0.api.auth.verify}?email=${encodeURIComponent(email)}`)
       .then(() => {
         setState(1)
+        setMessage(null)
       })
       .catch((e) => {
         setMessage(e as string)
@@ -133,7 +132,8 @@ const Register = ({
     setWait(60)
   }
 
-  const handleChangeEmailClick = () => {
+  const handleChangeEmailClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
     setState(0)
   }
 
@@ -146,8 +146,7 @@ const Register = ({
       body: JSON.stringify(Object.fromEntries(form)),
     })
       .then(async () => {
-        await mutate($0.api.user)
-        router.replace('/dashboard')
+        await mutate($0.api.user.get)
       })
       .catch((e) => {
         setMessage(e as string)
@@ -161,7 +160,7 @@ const Register = ({
     <>
       <NextSeo title='Register' nofollow />
 
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} container`}>
         <div className={styles.loginBox}>
           <span>Register</span>
           {message === null ? undefined : (

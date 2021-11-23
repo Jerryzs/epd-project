@@ -20,6 +20,7 @@ type Verify = {
 }
 
 const ROLE = new Set(['student', 'teacher'])
+const ID_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 const handler = async (
   req: NextApiRequest,
@@ -72,7 +73,7 @@ const handler = async (
     }
 
     const verify = await db.query<Verify[]>(
-      `SELECT * FROM \`verification_code\` WHERE \`code\` = ?`,
+      `SELECT * FROM \`verification\` WHERE \`code\` = ?`,
       code
     )
 
@@ -92,21 +93,23 @@ const handler = async (
       })
     }
 
+    const user = `user_${$0.getRandomId(10, ID_CHARS)}`
+
     const hash = await bcrypt.hash(password, 10)
 
     await db.query(
       `INSERT
-      INTO \`user\` (\`name\`, \`email\`, \`role\`, \`password\`)
+      INTO \`user\` (\`id\`, \`name\`, \`email\`, \`role\`)
       VALUES (?, ?, ?, ?)`,
-      [name, email, role, hash]
+      [user, name, email, role]
     )
 
-    const user = (
-      await db.query<{ id: number }[]>(
-        `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
-        email
-      )
-    )[0].id
+    await db.query(
+      `INSERT
+      INTO \`pass\` (\`user\`, \`password\`)
+      VALUES (?, ?)`,
+      [user, hash]
+    )
 
     const sid = await session.create(user)
 

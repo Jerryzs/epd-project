@@ -7,12 +7,18 @@ const GlobalObject = {
 
   api: {
     instruction: url + '/api/instruction',
-    user: url + '/api/user',
+    user: {
+      get: url + '/api/user',
+      classrooms: url + '/api/user/classrooms',
+    },
     auth: {
       login: url + '/api/auth/login',
       logout: url + '/api/auth/logout',
       register: url + '/api/auth/register',
       verify: url + '/api/auth/verify',
+    },
+    classroom: {
+      roster: url + '/api/classroom/roster',
     },
   },
 
@@ -44,11 +50,11 @@ const GlobalObject = {
   },
 
   auth: (user?: API.UserGET): user is User => {
-    return user !== undefined && user.id !== -1
+    return user !== undefined && user.id !== null
   },
 
   noAuth: (user?: API.UserGET): user is NoUser => {
-    return user !== undefined && user.id === -1
+    return user !== undefined && user.id === null
   },
 }
 

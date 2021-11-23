@@ -15,7 +15,9 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
   const [loading, setLoading] = useState(false)
 
   if ($0.auth(user)) {
-    router.replace('/dashboard')
+    user.role === 'student'
+      ? router.replace('/me')
+      : router.replace('/classroom')
   }
 
   const handleLoginSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -27,8 +29,7 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
       body: JSON.stringify(Object.fromEntries(form)),
     })
       .then(async () => {
-        await mutate($0.api.user)
-        router.replace('/dashboard')
+        await mutate($0.api.user.get)
       })
       .catch((e) => {
         setMessage(e as string)
@@ -42,7 +43,7 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
     <>
       <NextSeo title='Login' nofollow />
 
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} container`}>
         <div className={styles.loginBox}>
           <span>Login</span>
           {message === null ? undefined : (

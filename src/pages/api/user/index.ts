@@ -3,12 +3,6 @@ import session from '../../../libs/session'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type User = {
-  name: string
-  email: string
-  role: 'student' | 'teacher'
-}
-
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<API.BaseResponse<API.UserGET>>
@@ -21,7 +15,7 @@ const handler = async (
         success: true,
         message: 'No session id.',
         data: {
-          id: -1,
+          id: null,
         },
       })
     }
@@ -35,15 +29,13 @@ const handler = async (
         success: true,
         message: String(e),
         data: {
-          id: -1,
+          id: null,
         },
       })
     }
 
     const user = (
-      await db.query<User[]>(
-        `SELECT \`name\`, \`email\`, \`role\` FROM \`user\` WHERE \`id\` = ${id}`
-      )
+      await db.query<User[]>(`SELECT * FROM \`user\` WHERE \`id\` = ?`, id)
     )[0]
 
     if (user === undefined) {

@@ -1,0 +1,55 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 320px auto;
+  grid-template-rows: 60px auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+  height: 100vh;
+
+  .header {
+    grid-area: header;
+    padding: 12px 16px;
+    border-bottom: 1px solid #000000;
+    display: inline-block;
+
+    .classroom {
+      display: inline;
+      font-size: 1.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .left {
+    grid-area: sidebar;
+    border-right: 1px solid #000000;
+
+    a {
+      text-decoration: none;
+      color: #000000;
+
+      &:hover .name,
+      &.active .name {
+        background-color: #eeeeee;
+      }
+
+      &:focus-visible {
+        text-decoration: underline solid #000000 2px;
+      }
+    }
+
+    .name {
+      padding: 12px 16px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .main {
+    grid-area: main;
+    padding: 12px 16px;
+  }
+}

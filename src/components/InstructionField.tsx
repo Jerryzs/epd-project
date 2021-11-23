@@ -31,7 +31,7 @@ const InstructionField = ({
   onStateChange?: (editState: boolean) => void
 }): JSX.Element => {
   const { data, mutate } = swr ?? {
-    data: { instruction: initial, done: done === true ? 1 : 0 },
+    data: { instruction: initial, status: done ? 'done' : 'todo' },
     mutate: () => Promise.resolve(),
   }
 
@@ -42,7 +42,7 @@ const InstructionField = ({
   const [content, setContent] = useState(data?.instruction)
   const [empty, setEmpty] = useState(content === '')
   const [edit, setEdit] = useState(alwaysEditable)
-  const [strike, setStrike] = useState(!!data?.done)
+  const [strike, setStrike] = useState(data?.status === 'done')
 
   const focus = () => {
     const fakeInput = document.createElement('input')
@@ -73,7 +73,7 @@ const InstructionField = ({
       setContent(text)
       setEmpty(text === '')
     }
-    setStrike(!!(data?.done ?? 0))
+    setStrike(data?.status === 'todo' ?? false)
   }, [data, edit])
 
   useEffect(() => {

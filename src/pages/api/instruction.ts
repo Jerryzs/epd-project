@@ -3,11 +3,39 @@ import db from '../../libs/db'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const ID_LENGTH = 6
+const ID_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
 type Row = {
   id: string
   instruction: string
   done: number
+}
+
+const instructionExists = async (id: string): Promise<boolean> => {
+  const results = await db.query<Row[]>(
+    `SELECT *
+    FROM \`instruction\`
+    WHERE \`id\` = ?`,
+    id
+  )
+  return results.length !== 0
+}
+
+const createInstruction = async (task = ''): Promise<string> => {
+  let randId: string
+
+  do {
+    randId = $0.getRandomId(ID_LENGTH, ID_CHARS)
+  } while (!instructionExists(randId))
+
+  await db.query(
+    `INSERT
+    INTO \`instruction\` (\`id\`, \`instruction\`)
+    VALUES (?, ?)`,
+    [randId, task]
+  )
+
+  return randId
 }
 
 const handler = async (
@@ -20,64 +48,33 @@ const handler = async (
 
   try {
     if (req.method === 'GET') {
-      if (id.match(/^[a-z0-9]{6}$/) === null) {
+      const result = (
+        await db.query<Row[]>(
+          `SELECT * FROM \`instruction\` WHERE \`id\` = ?`,
+          id
+        )
+      )[0]
+
+      if (result === undefined) {
         return res.status(400).json({
           success: false,
-          message: 'id format incorrect',
-          data: null,
-        })
-      }
-
-      const result = await db.query<Row[]>(
-        `SELECT * FROM \`instruction\` WHERE \`id\` = ?`,
-        id
-      )
-
-      if (result.length === 0) {
-        return res.status(404).json({
-          success: false,
-          message: 'id not found',
+          message: 'Instruction not found.',
           data: null,
         })
       } else {
         return res.status(200).json({
           success: true,
           message: '',
-          data: {
-            instruction: result[0].instruction,
-            done: result[0].done === 0 ? 0 : 1,
-          },
+          data: result,
         })
       }
     }
 
     if (req.method === 'POST') {
-      const { done, instruction: ins } = JSON.parse(req.body ?? '')
+      const { status, instruction } = JSON.parse(req.body ?? '')
 
       if (id === '') {
-        let existing: Row[]
-        let randId: string
-
-        do {
-          randId = (() => {
-            let id = ''
-            const set = 'abcdefghijklmnopqrstuvwxyz0123456789'
-            const len = set.length
-            for (let i = 0; i < ID_LENGTH; i++) {
-              id += set.charAt(Math.floor(Math.random() * len))
-            }
-            return id
-          })()
-
-          existing = await db.query<Row[]>(
-            `SELECT * FROM \`instruction\` WHERE \`id\` = '${randId}'`
-          )
-        } while (existing.length !== 0)
-
-        await db.query(
-          `INSERT INTO \`instruction\` (\`id\`, \`instruction\`) VALUES ('${randId}', ?)`,
-          ins
-        )
+        const randId = await createInstruction(instruction)
 
         return res.status(200).json({
           success: true,
@@ -88,24 +85,25 @@ const handler = async (
         })
       }
 
-      if (id.match(/^[a-z0-9]{6}$/) === null) {
+      try {
+        if (status !== undefined && status in ['todo', 'current', 'done']) {
+          await db.query(
+            `UPDATE \`instruction\` SET \`status\` = ? WHERE \`id\` = ?`,
+            [status, id]
+          )
+        } else {
+          await db.query(
+            `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
+            [instruction, id]
+          )
+        }
+      } catch (e) {
         return res.status(400).json({
           success: false,
-          message: 'id format incorrect',
+          message:
+            'Instruction cannot be updated. (perhaps the id is incorrect?)',
           data: null,
         })
-      }
-
-      if (done !== undefined && done in [0, 1]) {
-        await db.query(
-          `UPDATE \`instruction\` SET \`done\` = ${done} WHERE \`id\` = ?`,
-          id
-        )
-      } else {
-        await db.query(
-          `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
-          [ins, id]
-        )
       }
 
       return res.status(200).json({
@@ -128,5 +126,7 @@ const handler = async (
     data: null,
   })
 }
+
+export { createInstruction, instructionExists }
 
 export default handler

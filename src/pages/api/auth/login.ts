@@ -9,8 +9,11 @@ type Form = {
   password: string
 }
 
-type Result = {
-  id: number
+type User = {
+  id: string
+}
+
+type Pass = {
   password: string
 }
 
@@ -33,43 +36,43 @@ const handler = async (
       })
     }
 
-    const id = parseInt(user)
+    let id = user
 
-    let result
-    if (!isNaN(id))
-      result = (
-        await db.query<Result[]>(
-          `SELECT \`id\`, \`password\` FROM \`user\` WHERE \`id\` = ?`,
-          id
-        )
-      )[0]
-    else
-      result = (
-        await db.query<Result[]>(
-          `SELECT \`id\`, \`password\` FROM \`user\` WHERE \`email\` = ?`,
-          user
-        )
-      )[0]
+    const ue = (
+      await db.query<User[]>(
+        `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
+        user
+      )
+    )[0]
 
-    if (result === undefined) {
+    if (ue !== undefined) id = ue.id
+
+    const data = (
+      await db.query<Pass[]>(
+        `SELECT \`password\` FROM \`pass\` WHERE \`user\` = ?`,
+        id
+      )
+    )[0]
+
+    if (data === undefined) {
       return res.status(400).json({
         success: false,
-        message: 'User or password does not exist.',
+        message: 'User or password is incorrect.',
         data: null,
       })
     }
 
-    const match = await bcrypt.compare(password, result.password)
+    const match = await bcrypt.compare(password, data.password)
 
     if (!match) {
       return res.status(400).json({
         success: false,
-        message: 'User or password does not exist.',
+        message: 'User or password is incorrect.',
         data: null,
       })
     }
 
-    const sid = await session.create(result.id)
+    const sid = await session.create(id)
 
     res.setHeader('Set-Cookie', session.cookie(sid))
 

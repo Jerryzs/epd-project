@@ -9,14 +9,20 @@ declare global {
   type JSONArray = Array<JSONValue>
 
   type User = {
-    id: number
+    id: string
     name: string
     email: string
     role: 'student' | 'teacher'
   }
 
   type NoUser = {
-    id: -1
+    id: null
+  }
+
+  type Classroom = {
+    id: string
+    name: string
+    instructor_name: string
   }
 
   namespace API {
@@ -27,8 +33,9 @@ declare global {
     }
 
     type InstructionGET = {
+      id: string
       instruction: string
-      done: 0 | 1
+      status: 'todo' | 'current' | 'done'
     }
 
     type InstructionPOST = {
@@ -36,5 +43,18 @@ declare global {
     }
 
     type UserGET = User | NoUser
+
+    namespace User {
+      type ClassroomsGET = {
+        classrooms: Classroom[]
+      }
+    }
+
+    namespace Classroom {
+      type RosterGET = {
+        classroom: Classroom
+        members: User[]
+      }
+    }
   }
 }

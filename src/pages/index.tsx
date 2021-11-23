@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     <>
       <NextSeo title='Create' />
 
-      <div>
+      <div className='container'>
         <InstructionField alwaysEditable timeout={2500} onSave={handleSave} />
       </div>
     </>
