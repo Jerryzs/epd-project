@@ -9,14 +9,14 @@ declare global {
   type JSONArray = Array<JSONValue>
 
   type User = {
-    id: number
+    id: string
     name: string
     email: string
     role: 'student' | 'teacher'
   }
 
   type NoUser = {
-    id: -1
+    id: null
   }
 
   namespace API {

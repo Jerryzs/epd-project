@@ -20,6 +20,7 @@ type Verify = {
 }
 
 const ROLE = new Set(['student', 'teacher'])
+const ID_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 const handler = async (
   req: NextApiRequest,
@@ -92,21 +93,16 @@ const handler = async (
       })
     }
 
+    const user = `user_${$0.getRandomId(10, ID_CHARS)}`
+
     const hash = await bcrypt.hash(password, 10)
 
     await db.query(
       `INSERT
-      INTO \`user\` (\`name\`, \`email\`, \`role\`)
-      VALUES (?, ?, ?)`,
-      [name, email, role]
+      INTO \`user\` (\`id\`, \`name\`, \`email\`, \`role\`)
+      VALUES (?, ?, ?, ?)`,
+      [user, name, email, role]
     )
-
-    const user = (
-      await db.query<{ id: number }[]>(
-        `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
-        email
-      )
-    )[0].id
 
     await db.query(
       `INSERT

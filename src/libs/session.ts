@@ -4,7 +4,7 @@ const SESSION_AGE = 604800
 
 type Session = {
   id: string
-  user: number
+  user: string
   expire: number
   platform: string
 }
@@ -12,7 +12,7 @@ type Session = {
 const session = {
   age: SESSION_AGE,
 
-  validate: async (sid: string): Promise<number> => {
+  validate: async (sid: string): Promise<string> => {
     const session = (
       await db.query<Session[]>(
         `SELECT * FROM \`session\` WHERE \`id\` = ?`,
@@ -39,7 +39,7 @@ const session = {
     return session.user
   },
 
-  create: async (user: number): Promise<string> => {
+  create: async (user: string): Promise<string> => {
     const sid = $0.getRandomId(32)
     const expire = Math.floor(Date.now() / 1000) + SESSION_AGE
 

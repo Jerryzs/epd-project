@@ -21,7 +21,7 @@ const handler = async (
         success: true,
         message: 'No session id.',
         data: {
-          id: -1,
+          id: null,
         },
       })
     }
@@ -35,7 +35,7 @@ const handler = async (
         success: true,
         message: String(e),
         data: {
-          id: -1,
+          id: null,
         },
       })
     }

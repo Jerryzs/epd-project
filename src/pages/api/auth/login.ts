@@ -10,7 +10,7 @@ type Form = {
 }
 
 type User = {
-  id: number
+  id: string
 }
 
 type Pass = {
@@ -36,46 +36,38 @@ const handler = async (
       })
     }
 
-    let id: number = parseInt(user)
+    let id = user
 
-    if (isNaN(id)) {
-      id = (
-        await db.query<User[]>(
-          `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
-          user
-        )
-      )[0]?.id
-    }
+    const ue = (
+      await db.query<User[]>(
+        `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
+        user
+      )
+    )[0]
 
-    if (id === undefined) {
-      return res.status(400).json({
-        success: false,
-        message: 'User or password does not exist.',
-        data: null,
-      })
-    }
+    if (ue !== undefined) id = ue.id
 
-    const pass = (
+    const data = (
       await db.query<Pass[]>(
         `SELECT \`password\` FROM \`pass\` WHERE \`user\` = ?`,
         id
       )
-    )[0]?.password
+    )[0]
 
-    if (pass === undefined) {
-      return res.status(500).json({
+    if (data === undefined) {
+      return res.status(400).json({
         success: false,
-        message: 'Unexpected error occured.',
+        message: 'User or password is incorrect.',
         data: null,
       })
     }
 
-    const match = await bcrypt.compare(password, pass)
+    const match = await bcrypt.compare(password, data.password)
 
     if (!match) {
       return res.status(400).json({
         success: false,
-        message: 'User or password does not exist.',
+        message: 'User or password is incorrect.',
         data: null,
       })
     }

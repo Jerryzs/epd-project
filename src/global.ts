@@ -44,11 +44,11 @@ const GlobalObject = {
   },
 
   auth: (user?: API.UserGET): user is User => {
-    return user !== undefined && user.id !== -1
+    return user !== undefined && user.id !== null
   },
 
   noAuth: (user?: API.UserGET): user is NoUser => {
-    return user !== undefined && user.id === -1
+    return user !== undefined && user.id === null
   },
 }
 
