@@ -85,16 +85,25 @@ const handler = async (
         })
       }
 
-      if (status !== undefined && status in ['todo', 'current', 'done']) {
-        await db.query(
-          `UPDATE \`instruction\` SET \`status\` = ? WHERE \`id\` = ?`,
-          [status, id]
-        )
-      } else {
-        await db.query(
-          `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
-          [instruction, id]
-        )
+      try {
+        if (status !== undefined && status in ['todo', 'current', 'done']) {
+          await db.query(
+            `UPDATE \`instruction\` SET \`status\` = ? WHERE \`id\` = ?`,
+            [status, id]
+          )
+        } else {
+          await db.query(
+            `UPDATE \`instruction\` SET \`instruction\` = ? WHERE \`id\` = ?`,
+            [instruction, id]
+          )
+        }
+      } catch (e) {
+        return res.status(400).json({
+          success: false,
+          message:
+            'Instruction cannot be updated. (perhaps the id is incorrect?)',
+          data: null,
+        })
       }
 
       return res.status(200).json({
