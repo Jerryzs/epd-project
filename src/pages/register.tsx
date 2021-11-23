@@ -160,7 +160,7 @@ const Register = ({
     <>
       <NextSeo title='Register' nofollow />
 
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} container`}>
         <div className={styles.loginBox}>
           <span>Register</span>
           {message === null ? undefined : (

@@ -41,7 +41,7 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
     <>
       <NextSeo title='Login' nofollow />
 
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} container`}>
         <div className={styles.loginBox}>
           <span>Login</span>
           {message === null ? undefined : (

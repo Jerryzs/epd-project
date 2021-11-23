@@ -45,7 +45,7 @@ const InstructionPage = ({
     <>
       <NextSeo title={id.toUpperCase()} />
 
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} container`}>
         <InstructionField
           swr={insSWR}
           onDone={(done) => {
