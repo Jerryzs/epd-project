@@ -22,7 +22,7 @@
     "react": "^17.0.2",
     "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",
-    "sass": "^1.43.5",
+    "sass": "^1.44.0",
     "serverless-mysql": "^1.5.4",
     "swr": "^1.0.1"
   },
