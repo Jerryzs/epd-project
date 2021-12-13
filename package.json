@@ -24,7 +24,7 @@
     "react-dom": "^17.0.2",
     "sass": "^1.45.0",
     "serverless-mysql": "^1.5.4",
-    "swr": "^1.1.0"
+    "swr": "^1.1.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
