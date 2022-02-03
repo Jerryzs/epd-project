@@ -1,20 +1,10 @@
 import db from '../../../libs/db'
 import session from '../../../libs/session'
 
-import { createInstruction, instructionExists } from '../instruction'
-
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-type Link = {
-  user: string
-  classroom: string
-  instruction: string
-}
 
 type Body = {
   id: string
-  user: string
-  instruction: string
 }
 
 const handler = async (
@@ -23,11 +13,13 @@ const handler = async (
 ): Promise<void> => {
   const query = req.query
 
-  const body = (
-    typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-  ) as Partial<Body>
+  const body = req.body
+    ? ((typeof req.body === 'string'
+        ? JSON.parse(req.body)
+        : req.body) as Partial<Body>)
+    : undefined
 
-  const id = query.id ?? body.id
+  const id = query.id ?? body?.id
 
   if (id === undefined || id === '') {
     return res.status(400).json({
@@ -38,11 +30,13 @@ const handler = async (
   }
 
   const sid = req.cookies.__sid
-  let ssuser: string
+  let user: string
 
   try {
-    ssuser = await session.validate(sid)
+    user = await session.validate(sid)
   } catch (e) {
+    db.end()
+    console.error(e)
     return res.status(403).json({
       success: false,
       message: 'Forbidden.',
@@ -51,16 +45,11 @@ const handler = async (
   }
 
   const classroom = (
-    await db.query<Classroom[]>(
-      `
-      SELECT *
-      FROM \`classroom\`
-      WHERE \`id\` = ?`,
-      id
-    )
+    await db.query<Classroom[]>('SELECT * FROM `classroom` WHERE `id` = ?', id)
   )[0]
 
   if (classroom === undefined) {
+    db.end()
     return res.status(400).json({
       success: false,
       message: 'Classroom does not exist.',
@@ -69,15 +58,13 @@ const handler = async (
   }
 
   if (req.method === 'GET') {
-    const links = await db.query<Link[]>(
-      `
-      SELECT *
-      FROM \`link\`
-      WHERE \`classroom\` = ?`,
+    const links = await db.query<DB.Link[]>(
+      'SELECT * FROM `link` WHERE `classroom` = ?',
       id
     )
 
     if (links.length === 0) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'Classroom roster not found.',
@@ -85,7 +72,8 @@ const handler = async (
       })
     }
 
-    if (links.every((link) => link.user !== ssuser)) {
+    if (links.every((link) => link.user !== user)) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'Requesting user not a member of the classroom.',
@@ -94,48 +82,26 @@ const handler = async (
     }
 
     const members = await db.query<User[]>(
-      `
-      SELECT *
-      FROM \`user\`
-      WHERE \`id\` IN (${links.map((link) => link.user).join(',')})`
+      'SELECT * FROM `user` WHERE `id` IN (' +
+        links.map((link) => `'${link.user}'`).join(',') +
+        ')'
     )
 
+    const invitations = await db.query<
+      Pick<DB.Invitation, 'recipient' | 'user'>[]
+    >('SELECT `recipient`, `user` FROM `invitation` WHERE `classroom` = ?', [
+      id,
+    ])
+
+    db.end()
     return res.status(200).json({
       success: true,
       message: '',
       data: {
         classroom,
         members,
+        invitations,
       },
-    })
-  }
-
-  if (req.method === 'POST') {
-    let instruction = body.instruction
-
-    if (instruction === undefined || instruction === '') {
-      instruction = await createInstruction()
-    } else if (!instructionExists(instruction)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Instruction does not exist.',
-        data: null,
-      })
-    }
-
-    if (body.user === undefined) {
-      await db.query(
-        `INSERT
-        INTO \`link\` (\`user\`, \`classroom\`, \`instruction\`)
-        VALUES (?, ?, ?)`,
-        [ssuser, classroom.id, instruction]
-      )
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: '',
-      data: null,
     })
   }
 

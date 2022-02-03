@@ -19,6 +19,7 @@ const GlobalObject = {
     },
     classroom: {
       roster: url + '/api/classroom/roster',
+      invite: url + '/api/classroom/invite',
     },
   },
 

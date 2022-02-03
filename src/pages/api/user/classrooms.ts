@@ -14,12 +14,14 @@ const handler = async (
   res: NextApiResponse<API.BaseResponse<API.User.ClassroomsGET>>
 ): Promise<void> => {
   const sid = req.cookies.__sid
-  let id
 
+  let id
   try {
     id = await session.validate(sid)
   } catch (e) {
-    res.status(403).json({
+    db.end()
+    console.error(e)
+    return res.status(403).json({
       success: false,
       message: e as string,
       data: null,
@@ -40,11 +42,20 @@ const handler = async (
       )
     }
 
+    const invitations = await db.query<
+      (Pick<DB.Classroom, 'id' | 'name'> & Pick<DB.Invitation, 'user'>)[]
+    >(
+      'SELECT `classroom`.`id`, `classroom`.`name`, `invitation`.`user` FROM `user` INNER JOIN `invitation` ON `user`.`id` = `invitation`.`recipient` OR `user`.`email` = `invitation`.`recipient` INNER JOIN `classroom` ON `classroom`.`id` = `invitation`.`classroom` WHERE `user`.`id` = ?',
+      [id]
+    )
+
+    db.end()
     return res.status(200).json({
       success: true,
       message: '',
       data: {
         classrooms,
+        invitations,
       },
     })
   }
