@@ -1,6 +1,6 @@
 const url = process.env.NEXT_PUBLIC_URL ?? ''
 
-const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890-_='
+const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 const GlobalObject = {
   url,
