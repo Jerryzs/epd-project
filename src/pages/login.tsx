@@ -32,7 +32,10 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
         await mutate($0.api.user.get)
       })
       .catch((e) => {
-        setMessage(e as string)
+        if ($0.isApiError(e)) {
+          const [, msg] = e
+          setMessage(msg)
+        }
       })
       .finally(() => {
         setLoading(false)

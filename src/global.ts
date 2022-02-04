@@ -34,13 +34,24 @@ const GlobalObject = {
     init?: RequestInit
   ): Promise<T> =>
     await fetch(url, init)
-      .then(async (res): Promise<API.BaseResponse<T>> => await res.json())
-      .then((res) => {
+      .then(
+        async (res): Promise<[API.BaseResponse<T>, number]> => [
+          await res.json(),
+          res.status,
+        ]
+      )
+      .then(([res, status]) => {
         if (!res.success) {
-          throw res.message
+          throw [status, res.message]
         }
         return res.data as T
       }),
+
+  isApiError: (e: unknown): e is API.Error =>
+    Array.isArray(e) &&
+    e.length === 2 &&
+    typeof e[0] === 'number' &&
+    typeof e[1] === 'string',
 
   getRandomId: (len: number, chars = RANDOM_CHARS): string => {
     let code = ''

@@ -33,7 +33,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       await $0.fetch(`${$0.api.auth.verify}?email=${encodeURIComponent(email)}`)
       props.state = 1
     } catch (e) {
-      props.error = e as string
+      if ($0.isApiError(e)) {
+        const [, msg] = e
+        props.error = msg
+      }
     }
   }
 
@@ -92,7 +95,10 @@ const Register = ({
         setMessage(null)
       })
       .catch((e) => {
-        setMessage(e as string)
+        if ($0.isApiError(e)) {
+          const [, msg] = e
+          setMessage(msg)
+        }
       })
       .finally(() => {
         setLoading(false)
@@ -149,7 +155,10 @@ const Register = ({
         await mutate($0.api.user.get)
       })
       .catch((e) => {
-        setMessage(e as string)
+        if ($0.isApiError(e)) {
+          const [, msg] = e
+          setMessage(msg)
+        }
       })
       .finally(() => {
         setLoading(false)

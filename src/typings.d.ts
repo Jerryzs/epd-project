@@ -32,6 +32,8 @@ declare global {
       data: T | null
     }
 
+    type Error = [number, string]
+
     type InstructionGET = {
       id: string
       instruction: string
