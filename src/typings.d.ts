@@ -25,6 +25,12 @@ declare global {
     instructor_name: string
   }
 
+  type LinkedList<T, U extends string | number> = (T & {
+    prev: U | null
+    next: U | null
+    [key: string]: U | null
+  })[]
+
   namespace API {
     interface BaseResponse<T extends JSONObject | null = null> {
       success: boolean

@@ -68,6 +68,41 @@ const GlobalObject = {
   noAuth: (user?: API.UserGET): user is NoUser => {
     return user !== undefined && user.id === null
   },
+
+  linkedSort: <T, U extends string | number>(
+    list: LinkedList<T, U>,
+    keyName = 'id'
+  ): T[] => {
+    const ordered: typeof list = []
+
+    const dict: { [key: string | number]: typeof list[0] } = {}
+    let first: U | null = null
+    let last: U | null = null
+
+    for (const item of list) {
+      if (!item.prev)
+        if (!first) first = item[keyName]
+        else throw 'duplicate null prev value'
+      if (!item.next)
+        if (!last) last = item[keyName]
+        else throw 'duplicate null next value'
+      const id = item[keyName]
+      if (id !== null) dict[id] = item
+      else throw 'id value is null, check key name entered'
+    }
+
+    if (first === null || last === null) throw 'missing end'
+
+    for (
+      let curr: typeof dict[U] | false = dict[first];
+      curr;
+      curr = curr.next !== null && dict[curr.next]
+    ) {
+      ordered.push(curr)
+    }
+
+    return ordered
+  },
 }
 
 export default GlobalObject
