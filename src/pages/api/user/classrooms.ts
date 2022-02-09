@@ -3,12 +3,7 @@ import session from '../../../libs/session'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type Link = {
-  id: number
-  user: number
-  classroom: number
-}
-
+export type Classroom = DB.Classroom & Pick<DB.Link, 'instruction'>
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<API.BaseResponse<API.User.ClassroomsGET>>
