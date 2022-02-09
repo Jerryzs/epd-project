@@ -46,6 +46,8 @@ declare global {
     namespace User {
       type ClassroomsGET = {
         classrooms: Classroom[]
+        invitations: (Pick<DB.Classroom, 'id' | 'name'> &
+          Pick<DB.Invitation, 'user'>)[]
       }
     }
 
