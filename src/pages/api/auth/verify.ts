@@ -69,7 +69,8 @@ const handler = async (
     const transporter = nodemailer.createTransport({
       host: process.env.MAIL_SMTP_HOST,
       port: 465,
-      secure: true,
+      secure: false, // upgrade later with STARTTLS
+      requireTLS: true,
       auth: {
         user: process.env.MAIL_SMTP_USER,
         pass: process.env.MAIL_SMTP_PASS,
