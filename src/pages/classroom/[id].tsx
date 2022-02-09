@@ -24,7 +24,7 @@ const Classroom = ({
   }
 
   const { data, error, mutate } = useSWR<API.Classroom.RosterGET, string>(
-    `${$0.api.classroom.roster}?id=${id}`,
+    `${$0.api.classroom.index}?id=${id}`,
     $0.fetch
   )
 
