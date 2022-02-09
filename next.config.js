@@ -12,6 +12,13 @@ module.exports = {
       })
     )
 
+    config.module.rules.push(
+      {
+        test: /\.(html|txt)$/,
+        use: 'raw-loader',
+      }
+    )
+
     return config
   },
 

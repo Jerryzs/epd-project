@@ -10,22 +10,4 @@ const mysql = ServerlessMySQL({
   },
 })
 
-const db = {
-  mysql,
-
-  query: async <T = unknown>(
-    q: string,
-    values: (string | number)[] | string | number = []
-  ): Promise<T> => {
-    try {
-      const results = await mysql.query<T>(q, values)
-      await mysql.end()
-      return results
-    } catch (e) {
-      console.error(e)
-      throw 'Internal error.'
-    }
-  },
-}
-
-export default db
+export default mysql

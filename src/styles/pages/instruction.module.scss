@@ -1,9 +1,19 @@
 .wrapper {
+  .instructions {
+    font-size: 1.5rem;
+    max-width: 750px;
+    margin: 2em auto;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  }
+
   .share {
+    color: #666666;
     text-align: center;
 
     a {
-      display: block;
+      text-decoration: none;
     }
   }
 }

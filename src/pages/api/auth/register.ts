@@ -20,18 +20,19 @@ type Verify = {
 }
 
 const ROLE = new Set(['student', 'teacher'])
-const ID_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<API.BaseResponse>
 ): Promise<void> => {
   if (req.method === 'POST') {
-    const body = (
-      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as Partial<Body>
+    const body = req.body
+      ? ((typeof req.body === 'string'
+          ? JSON.parse(req.body)
+          : req.body) as Partial<Body>)
+      : undefined
 
-    const { role, email, code, name, password, confirmation } = body
+    const { role, email, code, name, password, confirmation } = body ?? {}
 
     if (
       role === undefined ||
@@ -73,11 +74,12 @@ const handler = async (
     }
 
     const verify = await db.query<Verify[]>(
-      `SELECT * FROM \`verification\` WHERE \`code\` = ?`,
+      'SELECT * FROM `verification` WHERE `code` = ?',
       code
     )
 
     if (verify.length === 0 || verify[0].user !== email) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'Wrong verification code.',
@@ -86,6 +88,7 @@ const handler = async (
     }
 
     if (verify[0].expire < Math.floor(Date.now() / 1000)) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'Code expired.',
@@ -93,28 +96,24 @@ const handler = async (
       })
     }
 
-    const user = `user_${$0.getRandomId(10, ID_CHARS)}`
+    const user = `user_${$0.getRandomId(10)}`
 
     const hash = await bcrypt.hash(password, 10)
 
     await db.query(
-      `INSERT
-      INTO \`user\` (\`id\`, \`name\`, \`email\`, \`role\`)
-      VALUES (?, ?, ?, ?)`,
+      'INSERT INTO `user` (`id`, `name`, `email`, `role`) VALUES (?, ?, ?, ?)',
       [user, name, email, role]
     )
 
-    await db.query(
-      `INSERT
-      INTO \`pass\` (\`user\`, \`password\`)
-      VALUES (?, ?)`,
-      [user, hash]
-    )
+    await db.query('INSERT INTO `pass` (`user`, `password`) VALUES (?, ?)', [
+      user,
+      hash,
+    ])
 
     const sid = await session.create(user)
 
+    db.end()
     res.setHeader('Set-Cookie', session.cookie(sid))
-
     return res.status(200).json({
       success: true,
       message: '',
