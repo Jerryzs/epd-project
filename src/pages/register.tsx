@@ -9,6 +9,8 @@ import styles from '../styles/pages/login.module.scss'
 import type { ChangeEvent, FormEvent, MouseEvent } from 'react'
 import type { GetServerSideProps } from 'next'
 
+const RETRY_AFTER = 90
+
 type ServerSideProps = {
   email: string | null
   state: 0 | 1
@@ -60,7 +62,7 @@ const Register = ({
 
   const [loading, setLoading] = useState(false)
   const [state, setState] = useState(init)
-  const [wait, setWait] = useState(60)
+  const [wait, setWait] = useState(RETRY_AFTER)
   const [emailInput, setEmailInput] = useState(email ?? '')
   const [suggestion, setSuggestion] = useState<MailcheckModule.ISuggestion>()
   const [message, setMessage] = useState<string | null>(error)
@@ -73,7 +75,7 @@ const Register = ({
 
   useEffect(() => {
     const count = setInterval(() => {
-      setWait((wait) => (wait > 0 ? wait - 1 : wait))
+      setWait((wait) => (wait > 0 && !loading ? wait - 1 : wait))
     }, 1000)
 
     return () => {
@@ -84,7 +86,7 @@ const Register = ({
   useEffect(() => {
     setState(init)
     if (init === 1) {
-      setWait(60)
+      setWait(RETRY_AFTER)
     }
   }, [init])
 
@@ -102,7 +104,7 @@ const Register = ({
       })
       .finally(() => {
         setLoading(false)
-        setWait(60)
+        setWait(RETRY_AFTER)
       })
   }
 
@@ -111,7 +113,10 @@ const Register = ({
     if (mailcheckTimeout.current === undefined)
       mailcheckTimeout.current = setTimeout(async () => {
         setEmailInput((email) => {
-          setSuggestion(mailcheck.run({ email }))
+          const suggestion = mailcheck.run({ email })
+          if (suggestion?.domain.lastIndexOf('.') !== -1) {
+            setSuggestion(suggestion)
+          }
           return email
         })
         mailcheckTimeout.current = undefined
@@ -135,7 +140,7 @@ const Register = ({
   const handleResendClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
     verify(emailInput)
-    setWait(60)
+    setWait(RETRY_AFTER)
   }
 
   const handleChangeEmailClick = (e: MouseEvent<HTMLAnchorElement>) => {
