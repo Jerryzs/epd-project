@@ -3,11 +3,13 @@ import db from '../../../libs/db'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const EMAIL_PLAIN =
-  'Hello! Your email address is being used to create an account on MyTask, and the verification code is: %s. If you did not request a verification code, please disregard this email. Thank you. '
+import EMAIL_PLAIN from '../../../templates/api/auth/verify/email.txt'
+import EMAIL_HTML from '../../../templates/api/auth/verify/email.html'
 
-const EMAIL_HTML =
-  '<div style="max-width:720px;margin:0 auto;font-size:1rem;font-family:Verdana,Tahoma,Arial,sans-serif"><p>Hello!</p><p>Your email address is being used to create an account on MyTask, and the verification code is:</p><div style="display:inline-block;padding:8px 14px 8px 16px;text-align:center;font-size:1.15rem;font-weight:700;background-color:#ddd;border-radius:12px;letter-spacing:2px">%s</div><p>If you did not request a verification code, please disregard this email.</p><p>Thank you.</p></div>'
+const SUBJECT = 'MyTasks Verification Code'
+
+const EXPIRY_TIME = 305
+const RETRY_AFTER = 90
 
 const handler = async (
   req: NextApiRequest,
@@ -39,12 +41,12 @@ const handler = async (
 
     try {
       const result = await db.query<{ expire: number }[]>(
-        `SELECT \`expire\` FROM \`verification\` WHERE \`user\` = ?`,
+        'SELECT `expire` FROM `verification` WHERE `user` = ?',
         email
       )
 
       if (result.length !== 0) {
-        const diff = now() + 255 - result[0].expire
+        const diff = now() + (EXPIRY_TIME - RETRY_AFTER) - result[0].expire
         if (diff < 0) {
           db.end()
           return res.status(400).json({
@@ -78,7 +80,7 @@ const handler = async (
       await transporter.sendMail({
         from: process.env.MAIL_FROM,
         to: email,
-        subject: 'MyTask Verification Code',
+        subject: SUBJECT,
         text: EMAIL_PLAIN.replace('%s', code),
         html: EMAIL_HTML.replace('%s', code),
       })
@@ -93,7 +95,7 @@ const handler = async (
     }
 
     try {
-      const expiration = now() + 305
+      const expiration = now() + EXPIRY_TIME
 
       await db.query('DELETE FROM `verification` WHERE `user` = ?', email)
 
