@@ -10,24 +10,14 @@ const handler = async (
   const sid = req.cookies.__sid
 
   if (req.method === 'GET') {
-    if (sid === undefined) {
-      return res.status(200).json({
-        success: true,
-        message: 'No session id.',
-        data: {
-          id: null,
-        },
-      })
-    }
-
     let id
-
     try {
       id = await session.validate(sid)
     } catch (e) {
+      db.end()
       return res.status(200).json({
         success: true,
-        message: String(e),
+        message: 'Forbidden.',
         data: {
           id: null,
         },
@@ -35,10 +25,11 @@ const handler = async (
     }
 
     const user = (
-      await db.query<User[]>(`SELECT * FROM \`user\` WHERE \`id\` = ?`, id)
+      await db.query<User[]>('SELECT * FROM `user` WHERE `id` = ?', id)
     )[0]
 
     if (user === undefined) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'User not found. Maybe the user has been deleted?',
@@ -46,8 +37,8 @@ const handler = async (
       })
     }
 
+    db.end()
     res.setHeader('Set-Cookie', session.cookie(sid))
-
     return res.status(200).json({
       success: true,
       message: '',

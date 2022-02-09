@@ -22,13 +22,16 @@ const handler = async (
   res: NextApiResponse<API.BaseResponse>
 ): Promise<void> => {
   if (req.method === 'POST') {
-    const body = (
-      typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    ) as Partial<Form>
+    const body = req.body
+      ? ((typeof req.body === 'string'
+          ? JSON.parse(req.body)
+          : req.body) as Partial<Form>)
+      : undefined
 
-    const { user, password } = body
+    const { user, password } = body ?? {}
 
     if (user === undefined || password === undefined) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'Invalid request body',
@@ -39,22 +42,20 @@ const handler = async (
     let id = user
 
     const ue = (
-      await db.query<User[]>(
-        `SELECT \`id\` FROM \`user\` WHERE \`email\` = ?`,
-        user
-      )
+      await db.query<User[]>('SELECT `id` FROM `user` WHERE `email` = ?', user)
     )[0]
 
     if (ue !== undefined) id = ue.id
 
     const data = (
       await db.query<Pass[]>(
-        `SELECT \`password\` FROM \`pass\` WHERE \`user\` = ?`,
+        'SELECT `password` FROM `pass` WHERE `user` = ?',
         id
       )
     )[0]
 
     if (data === undefined) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'User or password is incorrect.',
@@ -65,6 +66,7 @@ const handler = async (
     const match = await bcrypt.compare(password, data.password)
 
     if (!match) {
+      db.end()
       return res.status(400).json({
         success: false,
         message: 'User or password is incorrect.',
@@ -74,8 +76,8 @@ const handler = async (
 
     const sid = await session.create(id)
 
+    db.end()
     res.setHeader('Set-Cookie', session.cookie(sid))
-
     return res.status(200).json({
       success: true,
       message: '',

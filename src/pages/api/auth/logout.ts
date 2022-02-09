@@ -10,6 +10,7 @@ const handler = async (
 
   if (req.method === 'GET') {
     if (sid === undefined) {
+      db.end()
       return res.status(200).json({
         success: true,
         message: 'No session to logout of.',
@@ -17,8 +18,9 @@ const handler = async (
       })
     }
 
-    await db.query(`DELETE FROM \`session\` WHERE \`id\` = ?`, sid)
+    await db.query('DELETE FROM `session` WHERE `id` = ?', sid)
 
+    db.end()
     return res.status(200).json({
       success: true,
       message: '',

@@ -31,7 +31,6 @@ const handler = async (
     user = await session.validate(sid)
   } catch (e) {
     db.end()
-    console.error(e)
     return res.status(403).json({
       success: false,
       message: 'Forbidden.',

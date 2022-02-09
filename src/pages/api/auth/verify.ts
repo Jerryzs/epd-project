@@ -46,6 +46,7 @@ const handler = async (
       if (result.length !== 0) {
         const diff = now() + 255 - result[0].expire
         if (diff < 0) {
+          db.end()
           return res.status(400).json({
             success: false,
             message: `Please try again after ${-diff} seconds.`,
@@ -54,7 +55,8 @@ const handler = async (
         }
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
+      db.end()
       return res.status(500).json({
         success: false,
         message: 'Server error.',
@@ -81,7 +83,8 @@ const handler = async (
         html: EMAIL_HTML.replace('%s', code),
       })
     } catch (e) {
-      console.log(e)
+      console.error(e)
+      db.end()
       return res.status(500).json({
         success: false,
         message: 'Failed to send verification code.',
@@ -92,21 +95,15 @@ const handler = async (
     try {
       const expiration = now() + 305
 
-      await db.query(
-        `DELETE
-        FROM \`verification\`
-        WHERE \`user\` = ?`,
-        email
-      )
+      await db.query('DELETE FROM `verification` WHERE `user` = ?', email)
 
       await db.query(
-        `INSERT
-        INTO \`verification\` (\`code\`, \`user\`, \`expire\`)
-        VALUES (?, ?, ?)`,
+        'INSERT INTO `verification` (`code`, `user`, `expire`) VALUES (?, ?, ?)',
         [code, email, expiration]
       )
     } catch (e) {
-      console.log(e)
+      console.error(e)
+      db.end()
       return res.status(500).json({
         success: false,
         message: 'Server error.',
@@ -114,6 +111,7 @@ const handler = async (
       })
     }
 
+    db.end()
     return res.status(200).json({
       success: true,
       message: '',
