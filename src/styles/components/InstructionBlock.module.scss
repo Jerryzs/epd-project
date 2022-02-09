@@ -1,0 +1,97 @@
+@import '../mixins';
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.wrapper {
+  text-align: left;
+  background-color: #ffffff;
+  line-height: 1.25em;
+  margin-top: -0.3em;
+  margin-bottom: -0.6em;
+  font-family: 'Fredoka One', Verdana, Arial, sans-serif;
+
+  .instruction {
+    position: relative;
+    padding-top: 0.3em;
+    padding-bottom: 0.6em;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #888888;
+    }
+
+    .editIcon {
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+      font-size: 1em;
+      line-height: 0;
+    }
+
+    .placeholder {
+      display: block;
+      width: 100%;
+      position: absolute;
+      top: 0.2em;
+      left: 0;
+      color: #888888 !important;
+      text-decoration: none;
+      cursor: text;
+    }
+
+    .text {
+      color: #000000 !important;
+      display: block;
+      width: 100%;
+      user-select: none;
+      min-height: 1.25em;
+      transition: filter ease-in 0.2s, text-decoration-color ease-in 0.2s;
+      text-decoration-line: none;
+
+      &,
+      &.done:hover,
+      &.done:focus,
+      &.done:focus-visible {
+        filter: none;
+        text-decoration-line: none;
+        text-decoration-color: transparent;
+      }
+
+      &.done,
+      &.done.showing {
+        color: $green !important;
+        filter: blur(2px);
+        text-decoration-line: line-through;
+        text-decoration-style: solid;
+        text-decoration-color: $green;
+        text-decoration-thickness: 0.25em;
+      }
+
+      &.todo {
+        cursor: default;
+      }
+
+      &.current {
+        color: $blue !important;
+        cursor: pointer;
+      }
+
+      &.new {
+        cursor: text;
+      }
+    }
+
+    .input {
+      width: 100%;
+      resize: none;
+      overflow: hidden;
+      margin-top: -0.1em;
+      margin-bottom: -0.3em;
+    }
+  }
+
+  &.editable {
+    .text,
+    .input {
+      padding-right: 2em;
+    }
+  }
+}

@@ -32,14 +32,10 @@ declare global {
     type Error = [number, string]
 
     type InstructionGET = {
-      id: string
-      instruction: string
-      status: 'todo' | 'current' | 'done'
+      instructions: DB.Instruction[]
     }
 
-    type InstructionPOST = {
-      id: string
-    }
+    type InstructionPOST = Pick<DB.Instruction, 'id' | 'sub_id'>
 
     type UserGET = User | NoUser
 

@@ -3,7 +3,9 @@ const url = process.env.NEXT_PUBLIC_URL ?? ''
 const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
 const getApi = (url: string) => ({
-  instruction: url + '/api/instruction',
+  instruction: {
+    index: url + '/api/instruction',
+  },
   user: {
     get: url + '/api/user',
     classrooms: url + '/api/user/classrooms',
@@ -104,6 +106,16 @@ const GlobalObject = {
     }
 
     return ordered
+  },
+
+  fparams: (
+    params: NodeJS.Dict<string | string[]> | undefined
+  ): NodeJS.Dict<string> | undefined => {
+    if (!params) return
+    const formatted: NodeJS.Dict<string> = {}
+    for (const [n, p] of Object.entries(params))
+      formatted[n] = typeof p === 'string' ? p : p?.[0]
+    return formatted
   },
 
   __dangerouslySetUrl: (url: string): void => void [url],
