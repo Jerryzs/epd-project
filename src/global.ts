@@ -2,26 +2,28 @@ const url = process.env.NEXT_PUBLIC_URL ?? ''
 
 const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
+const getApi = (url: string) => ({
+  instruction: url + '/api/instruction',
+  user: {
+    get: url + '/api/user',
+    classrooms: url + '/api/user/classrooms',
+  },
+  auth: {
+    login: url + '/api/auth/login',
+    logout: url + '/api/auth/logout',
+    register: url + '/api/auth/register',
+    verify: url + '/api/auth/verify',
+  },
+  classroom: {
+    roster: url + '/api/classroom/roster',
+    invite: url + '/api/classroom/invite',
+  },
+})
+
 const GlobalObject = {
   url,
 
-  api: {
-    instruction: url + '/api/instruction',
-    user: {
-      get: url + '/api/user',
-      classrooms: url + '/api/user/classrooms',
-    },
-    auth: {
-      login: url + '/api/auth/login',
-      logout: url + '/api/auth/logout',
-      register: url + '/api/auth/register',
-      verify: url + '/api/auth/verify',
-    },
-    classroom: {
-      roster: url + '/api/classroom/roster',
-      invite: url + '/api/classroom/invite',
-    },
-  },
+  api: getApi(url),
 
   regex: {
     email:
@@ -103,6 +105,19 @@ const GlobalObject = {
 
     return ordered
   },
+
+  __dangerouslySetUrl: (url: string): void => void [url],
+}
+
+if (process.env.NODE_ENV === 'development') {
+  Object.assign(GlobalObject, {
+    __dangerouslySetUrl: (url: string): void => {
+      Object.assign(GlobalObject, {
+        url,
+        api: getApi(url),
+      })
+    },
+  })
 }
 
 export default GlobalObject

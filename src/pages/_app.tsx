@@ -1,5 +1,6 @@
 import '../styles/global.scss'
 
+import { useEffect } from 'react'
 import useSWR from 'swr'
 import { DefaultSeo } from 'next-seo'
 
@@ -16,6 +17,12 @@ if (typeof window !== 'undefined') {
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { data } = useSWR<API.UserGET>($0.api.user.get, $0.fetch)
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      $0.__dangerouslySetUrl(window.location.origin)
+    }
+  }, [])
 
   return (
     <>
