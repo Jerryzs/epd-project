@@ -1,4 +1,5 @@
 const url = process.env.NEXT_PUBLIC_URL ?? ''
+const sameServer = !!process.env.SAME_SERVER
 
 const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
 
@@ -117,6 +118,9 @@ const GlobalObject = {
       formatted[n] = typeof p === 'string' ? p : p?.[0]
     return formatted
   },
+
+  toServerURL: (url: string): string =>
+    sameServer ? url.replace(GlobalObject.url, 'http://localhost:3000') : url,
 
   __dangerouslySetUrl: (url: string): void => void [url],
 }

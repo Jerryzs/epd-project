@@ -32,7 +32,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props.email = email
 
     try {
-      await $0.fetch(`${$0.api.auth.verify}?email=${encodeURIComponent(email)}`)
+      await $0.fetch(
+        `${$0.toServerURL($0.api.auth.verify)}?email=${encodeURIComponent(
+          email
+        )}`
+      )
       props.state = 1
     } catch (e) {
       if ($0.isApiError(e)) {

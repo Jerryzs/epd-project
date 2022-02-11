@@ -10,7 +10,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = $0.fparams(params) ?? {}
   try {
     const { instructions } = await $0.fetch<API.InstructionGET>(
-      `${$0.api.instruction.index}?id=${id}`
+      `${$0.toServerURL($0.api.instruction.index)}?id=${id}`
     )
     return {
       props: {
