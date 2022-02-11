@@ -60,7 +60,8 @@ const handler = async (
 
       db.end()
 
-      if (result === undefined) {
+      if (!result.length) {
+        db.end()
         return res.status(404).json({
           success: false,
           message: 'Instruction not found.',
