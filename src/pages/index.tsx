@@ -7,11 +7,15 @@ import type { NextPage } from 'next'
 const Home: NextPage = () => {
   const router = useRouter()
 
-  const handleSave = (text: string): void => {
-    if (text !== '') {
+  const handleSave = (
+    id: string,
+    sub_id: number,
+    instruction: string
+  ): void => {
+    if (instruction !== '') {
       $0.fetch<API.InstructionPOST>($0.api.instruction.index, {
         method: 'POST',
-        body: JSON.stringify({ instruction: text }),
+        body: JSON.stringify({ instruction }),
       }).then((res) => {
         router.replace(`/${res.id}`, undefined, { shallow: true })
       })
