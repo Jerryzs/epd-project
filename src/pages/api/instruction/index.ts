@@ -1,4 +1,5 @@
 import db from '../../../libs/db'
+import session from '../../../libs/session'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -41,13 +42,51 @@ const createInstruction = async (task = ''): Promise<[string, number]> => {
   }
 }
 
+const allowed = async (
+  id: DB.Instruction['id'],
+  user: DB.User['id'] | undefined,
+  role?: DB.User['role'] | undefined
+): Promise<boolean> => {
+  const link = await db.query<Pick<DB.Link, 'user' | 'classroom'>[]>(
+    'SELECT `user`, `classroom` FROM `link` WHERE `instruction` = ?',
+    [id]
+  )
+
+  if (link.length) {
+    if (!user) {
+      return false
+    }
+
+    const row = link[0]
+    const classroom = row.classroom
+
+    let userRole: DB.User['role'] | undefined
+    if (user == row.user) userRole = 'student'
+    else {
+      const info = await db.query<Pick<DB.User, 'role'>[]>(
+        'SELECT 1 FROM `user` INNER JOIN `link` ON `user`.`id` = `link`.`user` WHERE `user`.`id` = ? AND `user`.`role` = ? AND `link`.`classroom` = ?',
+        [user, 'teacher', classroom]
+      )
+      if (info.length) userRole = 'teacher'
+    }
+
+    if (!userRole) return false
+    if (role && role !== userRole) return false
+  }
+
+  return true
+}
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<
     API.BaseResponse<API.InstructionGET | API.InstructionPOST>
   >
 ): Promise<void> => {
+  const { __sid } = req.cookies
   const { id } = req.query as Query
+
+  const user = await session.validate(__sid).catch(() => void 0)
 
   try {
     if (req.method === 'GET') {
@@ -56,10 +95,6 @@ const handler = async (
         id
       )
 
-      const ordered = $0.linkedSort(result, 'sub_id')
-
-      db.end()
-
       if (!result.length) {
         db.end()
         return res.status(404).json({
@@ -67,15 +102,27 @@ const handler = async (
           message: 'Instruction not found.',
           data: null,
         })
-      } else {
-        return res.status(200).json({
-          success: true,
-          message: '',
-          data: {
-            instructions: ordered,
-          },
+      }
+
+      if (!(await allowed(id, user))) {
+        db.end()
+        return res.status(403).json({
+          success: false,
+          message: 'User does not have access permission.',
+          data: null,
         })
       }
+
+      const ordered = $0.linkedSort(result, 'sub_id')
+
+      db.end()
+      return res.status(200).json({
+        success: true,
+        message: '',
+        data: {
+          instructions: ordered,
+        },
+      })
     }
 
     if (req.method === 'POST') {
@@ -88,6 +135,7 @@ const handler = async (
       const { instruction, status, sub_id } = body ?? {}
 
       if (!id) {
+        // create instruction set
         const [randId, randSubId] = await createInstruction(instruction)
 
         db.end()
@@ -100,6 +148,7 @@ const handler = async (
           },
         })
       } else if (!instruction) {
+        // change instruction status
         if (
           id === undefined ||
           id === '' ||
@@ -126,11 +175,28 @@ const handler = async (
           })
         }
 
+        if (!(await allowed(id, user))) {
+          return res.status(403).json({
+            success: false,
+            message: 'User does not have permission to update status.',
+            data: null,
+          })
+        }
+
         await db.query(
           'UPDATE `instruction` SET `status` = ? WHERE `id` = ? AND `sub_id` = ?',
           [status, id, sub_id]
         )
       } else if (!sub_id) {
+        // insert new instruction
+        if (!(await allowed(id, user, 'teacher'))) {
+          return res.status(403).json({
+            success: false,
+            message: 'User does not have permission to add instruction.',
+            data: null,
+          })
+        }
+
         const randSubId = generateSubId()
 
         await db.query(
@@ -152,6 +218,15 @@ const handler = async (
           },
         })
       } else {
+        // update instruction text
+        if (!(await allowed(id, user, 'teacher'))) {
+          return res.status(403).json({
+            success: false,
+            message: 'User does not have permission to update instruction.',
+            data: null,
+          })
+        }
+
         try {
           await db.query(
             'UPDATE `instruction` SET `instruction` = ? WHERE `id` = ? AND `sub_id` = ?',
