@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
     }
   } catch (e) {
-    if (Array.isArray(e) && e[0] === 404) return { notFound: true }
+    if ($0.isApiError(e) && e[0] === 404) return { notFound: true }
     throw e
   }
 }
