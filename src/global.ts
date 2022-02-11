@@ -78,6 +78,8 @@ const GlobalObject = {
     list: LinkedList<T, U>,
     keyName = 'id'
   ): T[] => {
+    if (list.length < 2) return list.slice()
+
     const ordered: typeof list = []
 
     const dict: { [key: string | number]: typeof list[0] } = {}
