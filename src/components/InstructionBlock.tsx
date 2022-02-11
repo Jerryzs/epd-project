@@ -8,8 +8,6 @@ const NPID = '__NEWINSTRUCTIONPLACEHOLDER__'
 
 const InstructionBlock = ({
   className = '',
-  instruction = '',
-  status = 'todo',
   editable = false,
   swr,
   timeout = 2000,
@@ -19,8 +17,6 @@ const InstructionBlock = ({
   onNew,
 }: {
   className?: string
-  instruction?: string
-  status?: DB.Instruction['status']
   editable?: boolean
   swr?: SWRResponse<API.InstructionGET, API.BaseResponse<null>>
   timeout?: number
@@ -39,7 +35,7 @@ const InstructionBlock = ({
 }): JSX.Element => {
   const { data, mutate } = swr ?? {
     data: {
-      instructions: [{ id: 'UNKNOWN', sub_id: 1, instruction, status }],
+      instructions: [] as Omit<DB.Instruction, 'prev' | 'next'>[],
     },
     mutate: () => Promise.resolve(),
   }
@@ -60,7 +56,7 @@ const InstructionBlock = ({
     ? _content
     : _content.concat([
         {
-          id: NPID + _content[0].id,
+          id: NPID + (_content[0]?.id ?? ''),
           sub_id: 0,
           instruction: '',
           status: 'todo',
@@ -123,10 +119,11 @@ const InstructionBlock = ({
 
   useEffect(() => {
     if (current === -1) {
-      _setContent(data?.instructions ?? [])
-      _setEmpty(
-        data?.instructions.map(({ instruction }) => instruction === '') ?? []
-      )
+      if (!data?.instructions.length) {
+        return
+      }
+      _setContent(data.instructions)
+      _setEmpty(data.instructions.map(({ instruction }) => instruction === ''))
     }
   }, [data])
 
@@ -261,7 +258,9 @@ const InstructionBlock = ({
     const text = textarea?.value
     saveTimeout.current = undefined
     if (text) {
-      setContent(index, { instruction: text })
+      if (index < _content.length) {
+        setContent(index, { instruction: text })
+      }
       save(index, text, true)
     } else {
       setCurrent(-1)

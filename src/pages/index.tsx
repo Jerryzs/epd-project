@@ -7,17 +7,13 @@ import type { NextPage } from 'next'
 const Home: NextPage = () => {
   const router = useRouter()
 
-  const handleSave = (
-    id: string,
-    sub_id: number,
-    instruction: string
-  ): void => {
+  const handleNew = (instruction: string): void => {
     if (instruction !== '') {
       $0.fetch<API.InstructionPOST>($0.api.instruction.index, {
         method: 'POST',
         body: JSON.stringify({ instruction }),
       }).then((res) => {
-        router.replace(`/${res.id}`, undefined, { shallow: true })
+        router.replace(`/${res.id}`, undefined)
       })
     }
   }
@@ -27,7 +23,7 @@ const Home: NextPage = () => {
       <NextSeo title='Create' />
 
       <div className='container'>
-        <InstructionBlock timeout={2500} onSave={handleSave} />
+        <InstructionBlock editable onNew={handleNew} />
       </div>
     </>
   )
