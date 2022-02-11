@@ -18,7 +18,7 @@ const getApi = (url: string) => ({
     verify: url + '/api/auth/verify',
   },
   classroom: {
-    index: url + '/api/classroom/',
+    index: url + '/api/classroom',
     invite: url + '/api/classroom/invite',
   },
 })
