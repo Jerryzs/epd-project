@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <NextSeo title='Create' />
+      <NextSeo title='MyTasks Home' titleTemplate='%s' />
 
       <div className='container'>
         <InstructionBlock editable onNew={handleNew} />

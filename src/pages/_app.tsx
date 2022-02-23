@@ -8,7 +8,7 @@ import type { AppProps } from 'next/app'
 import type { DefaultSeoProps } from 'next-seo'
 
 const SEO: DefaultSeoProps = {
-  titleTemplate: '%s - MyTask',
+  titleTemplate: '%s - MyTasks',
 }
 
 if (typeof window !== 'undefined') {
