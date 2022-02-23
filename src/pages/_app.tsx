@@ -22,6 +22,12 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     if (process.env.NODE_ENV === 'development') {
       $0.__dangerouslySetUrl(window.location.origin)
     }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js', {
+        scope: '/',
+      })
+    }
   }, [])
 
   return (
