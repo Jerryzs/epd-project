@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import Error from 'next/error'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 import LinearLoader from '../../components/LinearLoader'
@@ -23,7 +24,7 @@ const Classroom = ({
     invitation: string | undefined
   }
 
-  const { data, error, mutate } = useSWR<API.Classroom.RosterGET, string>(
+  const { data, error, mutate } = useSWR<API.Classroom.RosterGET, API.Error>(
     `${$0.api.classroom.index}?id=${id}`,
     $0.fetch
   )
@@ -103,7 +104,7 @@ const Classroom = ({
   }
 
   if (error !== undefined) {
-    return error
+    return <Error statusCode={error[0]} title={error[1]} />
   }
 
   return (
