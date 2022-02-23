@@ -28,6 +28,32 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         scope: '/',
       })
     }
+
+    const debounce = (fn: (...params: unknown[]) => void) => {
+      let frame: number
+
+      return (...params: unknown[]) => {
+        if (frame) {
+          cancelAnimationFrame(frame)
+        }
+
+        frame = requestAnimationFrame(() => {
+          fn(...params)
+        })
+      }
+    }
+
+    const storeScroll = () => {
+      document.documentElement.dataset.scroll = String(
+        Math.floor(window.scrollY)
+      )
+    }
+
+    document.addEventListener('scroll', debounce(storeScroll), {
+      passive: true,
+    })
+
+    storeScroll()
   }, [])
 
   return (

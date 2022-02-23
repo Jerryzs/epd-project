@@ -1,0 +1,184 @@
+@import '../mixins';
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;900&display=swap');
+
+:root:not([data-scroll='0']) {
+  .wrapper {
+    nav {
+      background-color: #ffffff;
+    }
+  }
+}
+
+.wrapper {
+  nav {
+    transition: background-color 0.1s ease-in;
+  }
+
+  .fullpage {
+    width: 100%;
+    min-height: 470px;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+
+    .background {
+      filter: brightness(1.1) contrast(1.2);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -100;
+      background-image: url('/assets/images/index/classroom.jpg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .heading {
+      color: #000;
+      margin: 15vh auto 0;
+      text-align: center;
+
+      .textBlock {
+        display: inline-block;
+        padding: 1em;
+        background-color: #ffffff;
+        background-color: #ffffffdd;
+
+        h1, h2, h5 {
+          font-weight: 700;
+          font-family: 'Merriweather', serif;
+        }
+
+        h5 {
+          line-height: 1.5em;
+          margin-bottom: 0.5em;
+        }
+
+        .setup {
+          font-weight: 500;
+          font-family: 'Merriweather', serif;
+        }
+      }
+    }
+
+    .iMaker {
+      margin: 4em 0 5em;
+
+      @include media-breakpoint-down(lg) {
+        margin: 2em 0;
+      }
+
+      .iInput {
+        font-size: 2em;
+        padding: 0.4em 0.4em 0.7em;
+        border-radius: 0.5em;
+
+        @include media-breakpoint-down(md) {
+          font-size: 1.5em;
+        }
+
+        > div {
+          padding: 0;
+        }
+      }
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+
+      .scroll {
+        display: inline-block;
+        width: auto;
+        background-color: #ffffff;
+        background-color: #ffffffdd;
+        padding: 0.2em 1em 0;
+        font-weight: 700;
+        font-family: 'Merriweather', serif;
+        font-size: 1.25em;
+
+        > * {
+          display: block;
+        }
+
+        span {
+          margin-bottom: -0.4em;
+          letter-spacing: 0.05em;
+        }
+      }
+    }
+  }
+
+  .content {
+    .info {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 3em;
+
+      &.imgLeft {
+        @include media-breakpoint-up(sm) {
+          flex-direction: row-reverse;
+        }
+
+        figure {
+          @include media-breakpoint-up(sm) {
+            margin-right: 2.25em;
+          }
+        }
+      }
+
+      &.imgRight {
+        @include media-breakpoint-up(sm) {
+          flex-direction: row;
+        }
+
+        figure {
+          @include media-breakpoint-up(sm) {
+            margin-left: 2.25em;
+          }
+        }
+      }
+
+      div {
+        flex-grow: 1;
+
+        h2 {
+          margin-bottom: 2.25rem;
+        }
+
+        p {
+          display: inline-block;
+          font-size: 1.45rem;
+
+          @include media-breakpoint-down(md) {
+            font-size: 1.15rem;
+          }
+        }
+      }
+
+      figure {
+        flex-shrink: 0;
+        font-size: 1rem;
+        display: inline-table;
+        margin-bottom: auto;
+
+        img {
+          max-width: 100%;
+          margin-bottom: 1rem;
+
+          @include media-breakpoint-up(sm) {
+            max-height: 250px;
+            margin-bottom: 0;
+          }
+        }
+
+        figcaption {
+          display: table-caption;
+          caption-side: bottom;
+        }
+      }
+    }
+  }
+}
