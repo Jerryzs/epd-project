@@ -55,7 +55,7 @@ const handler = async (
 
     if (classroom === undefined) {
       db.end()
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: 'Classroom does not exist.',
         data: null,
@@ -78,7 +78,7 @@ const handler = async (
 
     if (links.every((link) => link.user !== user)) {
       db.end()
-      return res.status(400).json({
+      return res.status(403).json({
         success: false,
         message: 'Requesting user not a member of the classroom.',
         data: null,
