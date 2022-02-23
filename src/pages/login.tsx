@@ -85,7 +85,7 @@ const Login = ({ user }: { user: API.UserGET }): JSX.Element => {
               )}
             </button>
           </form>
-          <Link href='/register' prefetch={false}>
+          <Link href='/register' prefetch={false} replace>
             <a className='text-decoration-none text-muted'>
               I don&#39;t have an account
             </a>

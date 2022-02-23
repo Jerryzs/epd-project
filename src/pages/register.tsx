@@ -337,7 +337,7 @@ const Register = ({
               </button>
             </form>
           )}
-          <Link href='/login' prefetch={false}>
+          <Link href='/login' prefetch={false} replace>
             <a className='text-decoration-none text-muted'>
               Login with existing account
             </a>
