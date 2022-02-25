@@ -58,24 +58,8 @@ const Home = ({ user }: { user: User }): JSX.Element => {
           </div>
         </div>
         <div className={`${styles.content} container-xl my-5`}>
-          <div className={`${styles.info} ${styles.imgRight}`}>
-            <div>
-              <h2>
-                What is <em>the future</em>?
-              </h2>
-              <p>
-                We re-imagine the future of education to be inclusive of
-                everyone and support them with equal access to education
-                opportunities. Unfortunately, students with learning differences
-                often receive inadequate support or accommodation at their
-                institutions. In order to offset this situation, we target our
-                services directly towards educators and even the individual
-                students themselves. With our services, we strive to help
-                students with difficulties navigate their schooling environment
-                and maintain close connection with their teachers.
-              </p>
-            </div>
-            <figure className='figure'>
+          <div className={`${styles.info} clearfix`}>
+            <figure className='figure float-sm-end'>
               <img
                 className='figure-img'
                 src='/assets/images/index/ed-tech.jpg'
@@ -86,24 +70,23 @@ const Home = ({ user }: { user: User }): JSX.Element => {
                 under CC 3.0 BY-NC.
               </figcaption>
             </figure>
+            <h2>
+              What is <em>the future</em>?
+            </h2>
+            <p>
+              We re-imagine the future of education to be inclusive of everyone
+              and support them with equal access to education opportunities.
+              Unfortunately, students with learning differences often receive
+              inadequate support or accommodation at their institutions. In
+              order to offset this situation, we target our services directly
+              towards educators and even the individual students themselves.
+              With our services, we strive to help students with difficulties
+              navigate their schooling environment and maintain close connection
+              with their teachers.
+            </p>
           </div>
-          <div className={`${styles.info} ${styles.imgLeft}`}>
-            <div>
-              <h2>
-                What <em>services</em> do we provide?
-              </h2>
-              <p>
-                We provide a range of services to help students with learning
-                differences. First, we have carefully designed a task management
-                system in which teachers may assign series of tasks for their
-                students to complete. The tasks are intended to be small, easily
-                achievable goals that pave the path towards a bigger
-                accomplishment. The system also employs a clean and accessible
-                user interface that encourages easily-distracted students to
-                stay attentive to their tasks on-hand.
-              </p>
-            </div>
-            <figure className='figure'>
+          <div className={`${styles.info} clearfix`}>
+            <figure className='figure float-sm-start'>
               <img
                 className='figure-img'
                 src='/assets/images/index/e-learning.jpg'
@@ -113,6 +96,19 @@ const Home = ({ user }: { user: User }): JSX.Element => {
                 Credit: Francesca Launaro. Used under CC 3.0 BY-SA.
               </figcaption>
             </figure>
+            <h2>
+              What <em>services</em> do we provide?
+            </h2>
+            <p>
+              We provide a range of services to help students with learning
+              differences. First, we have carefully designed a task management
+              system in which teachers may assign series of tasks for their
+              students to complete. The tasks are intended to be small, easily
+              achievable goals that pave the path towards a bigger
+              accomplishment. The system also employs a clean and accessible
+              user interface that encourages easily-distracted students to stay
+              attentive to their tasks on-hand.
+            </p>
           </div>
         </div>
       </div>

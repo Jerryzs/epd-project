@@ -40,9 +40,6 @@
 
       .textBlock {
         display: inline-block;
-        padding: 1em;
-        background-color: #ffffff;
-        background-color: #ffffffdd;
 
         h1, h2, h5 {
           font-weight: 700;
@@ -57,6 +54,11 @@
         .setup {
           font-weight: 500;
           font-family: 'Merriweather', serif;
+
+          &:not(:hover, :active) {
+            background-color: #ffffff;
+            background-color: #ffffffdd;
+          }
         }
       }
     }
@@ -113,56 +115,44 @@
 
   .content {
     .info {
-      display: flex;
-      flex-direction: column;
       margin-bottom: 3em;
 
-      &.imgLeft {
-        @include media-breakpoint-up(sm) {
-          flex-direction: row-reverse;
-        }
-
-        figure {
-          @include media-breakpoint-up(sm) {
-            margin-right: 2.25em;
-          }
-        }
+      h2 {
+        margin-bottom: 2.25rem;
       }
 
-      &.imgRight {
-        @include media-breakpoint-up(sm) {
-          flex-direction: row;
-        }
+      p {
+        font-size: 1.5rem;
 
-        figure {
-          @include media-breakpoint-up(sm) {
-            margin-left: 2.25em;
-          }
-        }
-      }
-
-      div {
-        flex-grow: 1;
-
-        h2 {
-          margin-bottom: 2.25rem;
-        }
-
-        p {
-          display: inline-block;
-          font-size: 1.45rem;
-
-          @include media-breakpoint-down(md) {
-            font-size: 1.15rem;
-          }
+        @include media-breakpoint-down(lg) {
+          font-size: 1.15rem;
         }
       }
 
       figure {
-        flex-shrink: 0;
         font-size: 1rem;
         display: inline-table;
         margin-bottom: auto;
+
+        $fig_margin: 1.5em;
+
+        &[class*="float-"] {
+          margin-bottom: $fig_margin * 0.75;
+
+          @include media-breakpoint-up(sm) {
+            &[class*="-start"] {
+              margin-right: $fig_margin;
+            }
+
+            &[class*="-end"] {
+              margin-left: $fig_margin;
+            }
+          }
+        }
+
+        @include media-breakpoint-down(sm) {
+          width: 100%;
+        }
 
         img {
           max-width: 100%;
