@@ -31,20 +31,18 @@ const Navbar = ({
             <>
               {user.role === 'student' ? (
                 <Link href='/me'>
-                  <a className='btn btn-outline-primary btn-sm'>My Home</a>
+                  <a className='btn btn-outline-dark btn-sm'>My Home</a>
                 </Link>
               ) : (
                 <Link href='/classroom'>
-                  <a className='btn btn-outline-primary btn-sm'>
-                    My Classrooms
-                  </a>
+                  <a className='btn btn-outline-dark btn-sm'>My Classrooms</a>
                 </Link>
               )}
               <a
                 href={`/api/auth/logout?redirect=${encodeURIComponent(
                   window.location.href
                 )}`}
-                className='btn btn-outline-primary btn-sm'
+                className='btn btn-outline-dark btn-sm'
                 onClick={handleSignOutClick}
               >
                 Sign Out
@@ -52,7 +50,7 @@ const Navbar = ({
             </>
           ) : (
             <Link href='/login'>
-              <a className='btn btn-outline-primary btn-sm'>Sign In</a>
+              <a className='btn btn-outline-dark btn-sm'>Sign In</a>
             </Link>
           )}
         </div>

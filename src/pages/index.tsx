@@ -44,7 +44,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
             </div>
             <div className={styles.textBlock}>
               <Link href='/register'>
-                <a className={`${styles.setup} btn btn-outline-primary btn-sm`}>
+                <a className={`${styles.setup} btn btn-outline-dark btn-lg`}>
                   Sign up for an account
                 </a>
               </Link>
