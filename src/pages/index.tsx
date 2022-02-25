@@ -52,6 +52,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
           </div>
           <div className={styles.bottom}>
             <div className={styles.scroll}>
+              <span>Explore</span>
               <i className='bi bi-chevron-double-down'></i>
             </div>
           </div>

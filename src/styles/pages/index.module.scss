@@ -94,17 +94,17 @@
         width: auto;
         background-color: #ffffff;
         background-color: #ffffffdd;
-        padding: 0.2em 1em 0;
-        font-weight: 700;
+        padding: 0.5em 1.25em 0;
+        font-weight: 500;
         font-family: 'Merriweather', serif;
-        font-size: 1.25em;
+        font-size: 1em;
 
         > * {
           display: block;
         }
 
         span {
-          margin-bottom: -0.4em;
+          margin-bottom: -0.2em;
           letter-spacing: 0.05em;
         }
       }
