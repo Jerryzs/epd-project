@@ -47,6 +47,7 @@
       min-height: 1.25em;
       transition: filter ease-in 0.2s, text-decoration-color ease-in 0.2s;
       text-decoration-line: none;
+      word-wrap: break-word;
 
       &,
       &.done:hover,
@@ -83,10 +84,15 @@
 
     .input {
       width: 100%;
+      height: 1.5em;
       resize: none;
       overflow: hidden;
       margin-top: -0.1em;
       margin-bottom: -0.3em;
+
+      &[data-prevent=true] {
+        overflow: auto;
+      }
     }
   }
 
