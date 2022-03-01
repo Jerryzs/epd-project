@@ -1,7 +1,6 @@
 import '../styles/global.scss'
 
 import 'typeface-fredoka-one'
-import 'typeface-merriweather'
 
 import { useEffect } from 'react'
 import useSWR from 'swr'
