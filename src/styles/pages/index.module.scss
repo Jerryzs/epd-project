@@ -143,8 +143,12 @@
           margin-bottom: 1rem;
 
           @include media-breakpoint-up(sm) {
-            max-height: 250px;
             margin-bottom: 0;
+            max-height: 225px;
+          }
+
+          @include media-breakpoint-up(md) {
+            max-height: 275px;
           }
         }
 
