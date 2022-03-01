@@ -74,10 +74,10 @@ const InstructionPage = ({
         </div>
 
         <div className={styles.share}>
-          Share your instruction with students at
+          You may share this link with your students
           <br />
-          <a href={`${$0.url}/${id}`}>
-            {`${$0.url}/`}
+          <a href={`${$0.shortUrl}/${id}`}>
+            {`${$0.shortUrl}/`}
             <b>{id.toUpperCase()}</b>
           </a>
         </div>
