@@ -158,5 +158,26 @@
         }
       }
     }
+
+    .promo {
+      margin: 5rem 0;
+      text-align: center;
+
+      h2 {
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2em;
+
+        @include media-breakpoint-up(sm) {
+          font-size: 1.5em;
+        }
+
+        a {
+          display: inline-block;
+        }
+      }
+    }
   }
 }

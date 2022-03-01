@@ -6,6 +6,8 @@ import InstructionBlock from '../components/InstructionBlock'
 import Footer from '../components/Footer'
 import styles from '../styles/pages/index.module.scss'
 
+import type { MouseEvent } from 'react'
+
 const Home = ({ user }: { user: User }): JSX.Element => {
   const router = useRouter()
 
@@ -18,6 +20,11 @@ const Home = ({ user }: { user: User }): JSX.Element => {
         router.replace(`/${res.id}`, undefined)
       })
     }
+  }
+
+  const handleToTopClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    scrollTo(0, 0)
   }
 
   return (
@@ -105,6 +112,20 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               accomplishment. The system also employs a clean and accessible
               user interface that encourages easily-distracted students to stay
               attentive to their tasks on-hand.
+            </p>
+          </div>
+          <div className={styles.promo}>
+            <h2>Try our services now&#x2026;</h2>
+            <p>
+              {'enter an instruction '}
+              <a href='#' onClick={handleToTopClick}>
+                at the top of this page
+              </a>
+              {' or '}
+              <Link href='/register'>
+                <a>sign up for an account</a>
+              </Link>
+              .
             </p>
           </div>
         </div>
