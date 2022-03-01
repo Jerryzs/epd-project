@@ -43,6 +43,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
             <div className='container-xl'>
               <div className={styles.iMaker}>
                 <InstructionBlock
+                  preventResize
                   className={styles.iInput}
                   editable
                   onNew={handleNew}
