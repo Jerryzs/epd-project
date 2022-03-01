@@ -327,7 +327,7 @@ const InstructionBlock = ({
                 e.currentTarget.focus()
               }}
             >
-              Click to enter an instruction&#x2026;
+              Enter an instruction here&#x2026;
             </a>
           )}
 
