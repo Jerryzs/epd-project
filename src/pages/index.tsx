@@ -107,11 +107,36 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               We provide a range of services to help students with learning
               differences. First, we have carefully designed a task management
               system in which teachers may assign series of tasks for their
-              students to complete. The tasks are intended to be small, easily
-              achievable goals that pave the path towards a bigger
-              accomplishment. The system also employs a clean and accessible
-              user interface that encourages easily-distracted students to stay
+              students to complete. The tasks are intended to be small,
+              easily-achievable goals that pave the path towards a bigger
+              assignment. The system also employs a clean and accessible user
+              interface that encourages easily-distracted students to stay
               attentive to their tasks on-hand.
+            </p>
+          </div>
+          <div className={`${styles.info} clearfix`}>
+            <figure className='figure float-sm-end'>
+              <img
+                className='figure-img'
+                src='/assets/images/index/school.jpg'
+                alt=''
+              />
+              <figcaption className='figure-caption'>
+                Credit: Siyuan Zhang, Winchester Thurston School.
+              </figcaption>
+            </figure>
+            <h2>
+              Who are <em>we</em>?
+            </h2>
+            <p>
+              We use the word &ldquo;we&rdquo; to refer to not only the creator
+              of this platform, but also everyone who supported the development
+              of our services. In order to make our services as helpful and
+              friendly as possible, we have consulted experts and professionals
+              in disciplines from special education to entertainment technology.
+              The word &ldquo;we&rdquo; embodies the collective effort of all
+              those people who wish for a better, more inclusive education
+              environment for the future generations.
             </p>
           </div>
           <div className={styles.promo}>
