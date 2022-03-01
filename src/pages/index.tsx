@@ -6,6 +6,8 @@ import InstructionBlock from '../components/InstructionBlock'
 import Footer from '../components/Footer'
 import styles from '../styles/pages/index.module.scss'
 
+import type { MouseEvent } from 'react'
+
 const Home = ({ user }: { user: User }): JSX.Element => {
   const router = useRouter()
 
@@ -18,6 +20,11 @@ const Home = ({ user }: { user: User }): JSX.Element => {
         router.replace(`/${res.id}`, undefined)
       })
     }
+  }
+
+  const handleToTopClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    scrollTo(0, 0)
   }
 
   return (
@@ -36,6 +43,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
             <div className='container-xl'>
               <div className={styles.iMaker}>
                 <InstructionBlock
+                  preventResize
                   className={styles.iInput}
                   editable
                   onNew={handleNew}
@@ -51,10 +59,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
             </div>
           </div>
           <div className={styles.bottom}>
-            <div className={styles.scroll}>
-              <span>Explore</span>
-              <i className='bi bi-chevron-double-down'></i>
-            </div>
+            <i className='bi bi-chevron-compact-down'></i>
           </div>
         </div>
         <div className={`${styles.content} container-xl my-5`}>
@@ -103,11 +108,50 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               We provide a range of services to help students with learning
               differences. First, we have carefully designed a task management
               system in which teachers may assign series of tasks for their
-              students to complete. The tasks are intended to be small, easily
-              achievable goals that pave the path towards a bigger
-              accomplishment. The system also employs a clean and accessible
-              user interface that encourages easily-distracted students to stay
+              students to complete. The tasks are intended to be small,
+              easily-achievable goals that pave the path towards a bigger
+              assignment. The system also employs a clean and accessible user
+              interface that encourages easily-distracted students to stay
               attentive to their tasks on-hand.
+            </p>
+          </div>
+          <div className={`${styles.info} clearfix`}>
+            <figure className='figure float-sm-end'>
+              <img
+                className='figure-img'
+                src='/assets/images/index/school.jpg'
+                alt=''
+              />
+              <figcaption className='figure-caption'>
+                Credit: Siyuan Zhang, Winchester Thurston School.
+              </figcaption>
+            </figure>
+            <h2>
+              Who are <em>we</em>?
+            </h2>
+            <p>
+              We use the word &ldquo;we&rdquo; to refer to not only the creator
+              of this platform, but also everyone who supported the development
+              of our services. In order to make our services as helpful and
+              friendly as possible, we have consulted experts and professionals
+              in disciplines from special education to entertainment technology.
+              The word &ldquo;we&rdquo; embodies the collective effort of all
+              those people who wish for a better, more inclusive education
+              environment for the future generations.
+            </p>
+          </div>
+          <div className={styles.promo}>
+            <h2>Try our services now&#x2026;</h2>
+            <p>
+              {'enter an instruction '}
+              <a href='#' onClick={handleToTopClick}>
+                at the top of this page
+              </a>
+              {' or '}
+              <Link href='/register'>
+                <a>sign up for an account</a>
+              </Link>
+              .
             </p>
           </div>
         </div>

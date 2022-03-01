@@ -1,5 +1,4 @@
 @import '../mixins';
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;900&display=swap');
 
 :root:not([data-scroll='0']) {
   .wrapper {
@@ -16,7 +15,7 @@
 
   .fullpage {
     width: 100%;
-    min-height: 470px;
+    min-height: 500px;
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -43,7 +42,6 @@
 
         h1, h2, h5 {
           font-weight: 700;
-          font-family: 'Merriweather', serif;
         }
 
         h5 {
@@ -52,8 +50,8 @@
         }
 
         .setup {
-          font-weight: 500;
-          font-family: 'Merriweather', serif;
+          font-weight: 700;
+          line-height: 1.25em;
 
           &:not(:hover, :active) {
             background-color: #ffffff;
@@ -91,24 +89,10 @@
       width: 100%;
       text-align: center;
 
-      .scroll {
-        display: inline-block;
-        width: auto;
-        background-color: #ffffff;
-        background-color: #ffffffdd;
-        padding: 0.5em 1.25em 0;
-        font-weight: 500;
-        font-family: 'Merriweather', serif;
-        font-size: 1em;
-
-        > * {
-          display: block;
-        }
-
-        span {
-          margin-bottom: -0.2em;
-          letter-spacing: 0.05em;
-        }
+      i {
+        font-size: 4.5em;
+        -webkit-text-stroke-color: #ffffff;
+        -webkit-text-stroke-width: 0.025em;
       }
     }
   }
@@ -159,14 +143,39 @@
           margin-bottom: 1rem;
 
           @include media-breakpoint-up(sm) {
-            max-height: 250px;
             margin-bottom: 0;
+            max-height: 225px;
+          }
+
+          @include media-breakpoint-up(md) {
+            max-height: 275px;
           }
         }
 
         figcaption {
           display: table-caption;
           caption-side: bottom;
+        }
+      }
+    }
+
+    .promo {
+      margin: 5rem 0;
+      text-align: center;
+
+      h2 {
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2em;
+
+        @include media-breakpoint-up(sm) {
+          font-size: 1.5em;
+        }
+
+        a {
+          display: inline-block;
         }
       }
     }

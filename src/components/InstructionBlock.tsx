@@ -9,6 +9,7 @@ const NPID = '__NEWINSTRUCTIONPLACEHOLDER__'
 const InstructionBlock = ({
   className = '',
   editable = false,
+  preventResize = false,
   swr,
   timeout = 2000,
   onStatusChange,
@@ -18,6 +19,7 @@ const InstructionBlock = ({
 }: {
   className?: string
   editable?: boolean
+  preventResize?: boolean
   swr?: SWRResponse<API.InstructionGET, API.BaseResponse<null>>
   timeout?: number
   onStatusChange?: (
@@ -113,6 +115,7 @@ const InstructionBlock = ({
   }
 
   const resizeTextArea = (el: HTMLTextAreaElement) => {
+    if (preventResize) return
     el.style.height = '5px'
     el.style.height = el.scrollHeight + 4 + 'px'
   }
@@ -309,6 +312,7 @@ const InstructionBlock = ({
               id={`textarea_${uId}${id}${sub_id}`}
               rows={1}
               className={styles.input}
+              data-prevent={preventResize}
               onInput={handleTextAreaInput.bind(null, index)}
               onBlur={handleTextAreaBlur.bind(null, index)}
               onKeyDown={handleTextAreaKeyDown.bind(null, index)}
@@ -327,7 +331,7 @@ const InstructionBlock = ({
                 e.currentTarget.focus()
               }}
             >
-              Click to enter an instruction&#x2026;
+              Enter an instruction here&#x2026;
             </a>
           )}
 

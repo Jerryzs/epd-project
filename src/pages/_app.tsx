@@ -1,5 +1,7 @@
 import '../styles/global.scss'
 
+import 'typeface-fredoka-one'
+
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { DefaultSeo } from 'next-seo'
