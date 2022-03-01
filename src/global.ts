@@ -1,4 +1,5 @@
 const url = process.env.NEXT_PUBLIC_URL ?? ''
+const shortUrl = process.env.NEXT_PUBLIC_SHORT_URL ?? url
 const sameServer = !!process.env.SAME_SERVER
 
 const RANDOM_CHARS = 'abcdefghijklmnopqrstuvwxyz1234567890'
@@ -25,6 +26,7 @@ const getApi = (url: string) => ({
 
 const GlobalObject = {
   url,
+  shortUrl,
 
   api: getApi(url),
 
