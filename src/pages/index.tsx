@@ -143,15 +143,19 @@ const Home = ({ user }: { user: User }): JSX.Element => {
           <div className={styles.promo}>
             <h2>Try our services now&#x2026;</h2>
             <p>
-              {'enter an instruction '}
-              <a href='#' onClick={handleToTopClick}>
-                at the top of this page
-              </a>
-              {' or '}
-              <Link href='/register'>
-                <a>sign up for an account</a>
-              </Link>
-              .
+              <span>
+                {'enter an instruction '}
+                <a href='#' onClick={handleToTopClick}>
+                  at the top of this page
+                </a>
+              </span>
+              <span>
+                {' or '}
+                <Link href='/register'>
+                  <a>sign up for an account</a>
+                </Link>
+                .
+              </span>
             </p>
           </div>
         </div>
