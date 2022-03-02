@@ -5,13 +5,12 @@
   background-color: #ffffff;
   line-height: 1.25em;
   margin-top: -0.3em;
-  margin-bottom: -0.6em;
+  margin-bottom: -0.3em;
   font-family: 'Fredoka One', Verdana, Arial, sans-serif;
 
   .instruction {
     position: relative;
-    padding-top: 0.3em;
-    padding-bottom: 0.6em;
+    padding: 0.3em 0;
 
     &:not(:last-child) {
       border-bottom: 1px solid #888888;
@@ -29,8 +28,10 @@
       display: block;
       width: 100%;
       position: absolute;
-      top: 0.2em;
+      top: 0;
       left: 0;
+      padding: 0.3em 0;
+      line-height: 1.5em;
       color: #888888 !important;
       text-decoration: none;
       cursor: text;
@@ -44,7 +45,8 @@
       display: block;
       width: 100%;
       user-select: none;
-      min-height: 1.25em;
+      min-height: 1.5em;
+      line-height: 1.5em;
       transition: filter ease-in 0.2s, text-decoration-color ease-in 0.2s;
       text-decoration-line: none;
       word-wrap: break-word;
@@ -83,12 +85,11 @@
     }
 
     .input {
+      display: block;
       width: 100%;
       height: 1.5em;
       resize: none;
       overflow: hidden;
-      margin-top: -0.1em;
-      margin-bottom: -0.3em;
 
       &[data-prevent=true] {
         overflow: auto;

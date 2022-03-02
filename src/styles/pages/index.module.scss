@@ -70,15 +70,16 @@
 
       .iInput {
         font-size: 2em;
-        padding: 0.4em 0.4em 0.7em;
+        padding: 0.1em 0.4em;
         border-radius: 0.5em;
 
         @include media-breakpoint-down(md) {
           font-size: 1.5em;
+          padding: 0.4em;
         }
 
-        > div {
-          padding: 0;
+        textarea {
+          padding-right: 0;
         }
       }
     }

@@ -117,7 +117,7 @@ const InstructionBlock = ({
   const resizeTextArea = (el: HTMLTextAreaElement) => {
     if (preventResize) return
     el.style.height = '5px'
-    el.style.height = el.scrollHeight + 4 + 'px'
+    el.style.height = el.scrollHeight + 2 + 'px'
   }
 
   useEffect(() => {
