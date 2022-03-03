@@ -79,7 +79,8 @@ const InstructionBlock = ({
       return arr
     })
 
-  const focus = (el: HTMLElement | null) => {
+  // for safari touch compatibility
+  const focus = () => {
     const fakeInput = document.createElement('input')
     fakeInput.setAttribute('type', 'text')
     fakeInput.setAttribute('readonly', 'true')
@@ -89,13 +90,11 @@ const InstructionBlock = ({
     fakeInput.style.fontSize = '16px'
 
     document.body.prepend(fakeInput)
-
     fakeInput.focus({ preventScroll: true })
 
     setTimeout(() => {
-      el?.focus()
       fakeInput.remove()
-    }, 100)
+    }, 500)
   }
 
   const save = (index: number, text: string, final = false) => {
@@ -132,13 +131,14 @@ const InstructionBlock = ({
 
   useEffect(() => {
     onCurrentChange?.(current)
+
     if (current !== -1) {
       const { id, sub_id } = content[current]
       const el = document.getElementById(
         `textarea_${uId}${id}${sub_id}`
       ) as HTMLTextAreaElement | null
       if (el) {
-        focus(el)
+        el.focus()
         el.setSelectionRange(el.value.length, el.value.length)
         resizeTextArea(el)
       }
@@ -152,11 +152,13 @@ const InstructionBlock = ({
     e.preventDefault()
     setEmpty(index, false)
     setCurrent(index)
+    focus()
   }
 
   const handlePlaceholderFocus = (index: number): void => {
     setEmpty(index, false)
     setCurrent(index)
+    focus()
   }
 
   const handleContentClick = (
