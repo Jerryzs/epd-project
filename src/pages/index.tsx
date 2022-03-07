@@ -68,11 +68,10 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               <img
                 className='figure-img'
                 src='/assets/images/index/ed-tech.jpg'
-                alt=''
+                alt='A teacher working with a student one-on-one.'
               />
               <figcaption className='figure-caption'>
-                Credit: David Baillot, UCSD Jacobs School of Engineering. Used
-                under CC 3.0 BY-NC.
+                Credit: David Baillot. Used under CC 3.0 BY-NC.
               </figcaption>
             </figure>
             <h2>
@@ -86,8 +85,8 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               order to offset this situation, we target our services directly
               towards educators and even the individual students themselves.
               With our services, we strive to help students with difficulties
-              navigate their schooling environment and maintain close connection
-              with their teachers.
+              navigate their schooling environment and maintain close
+              connections with their teachers.
             </p>
           </div>
           <div className={`${styles.info} clearfix`}>
@@ -95,7 +94,7 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               <img
                 className='figure-img'
                 src='/assets/images/index/e-learning.jpg'
-                alt=''
+                alt='A series of computer setups in a school computer lab.'
               />
               <figcaption className='figure-caption'>
                 Credit: Francesca Launaro. Used under CC 3.0 BY-SA.
@@ -105,14 +104,26 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               What <em>services</em> do we provide?
             </h2>
             <p>
-              We provide a range of services to help students with learning
-              differences. First, we have carefully designed a task management
-              system in which teachers may assign series of tasks for their
-              students to complete. The tasks are intended to be small,
-              easily-achievable goals that pave the path towards a bigger
-              assignment. The system also employs a clean and accessible user
+              We provide a range of services to help students, especially those
+              with learning differences. We have carefully designed a task
+              management system in which teachers may assign series of tasks for
+              their students to complete. The tasks are intended to be small,
+              easily achievable goals that pave the path towards bigger
+              assignments. The system also employs a clean and accessible user
               interface that encourages easily-distracted students to stay
-              attentive to their tasks on-hand.
+              attentive to their tasks on hand.
+            </p>
+            <p>
+              What makes our services unique is not only our focus on
+              accessibility but also our vision of a teacher-driven experience
+              for students. Often students do not receive their needed support
+              because their teachers are not trained to accommodate such needs;
+              in fact, the knowledge required to facilitate such accommodations
+              is so complex that it comprises numerous fields of study distinct
+              from just education. Our platform practically serves as a bridge
+              between students and teachers, and our services are designed to
+              constrain and advise teachers to act in ways that best fulfill the
+              needs of their students.
             </p>
           </div>
           <div className={`${styles.info} clearfix`}>
@@ -120,24 +131,21 @@ const Home = ({ user }: { user: User }): JSX.Element => {
               <img
                 className='figure-img'
                 src='/assets/images/index/school.jpg'
-                alt=''
+                alt='A table surrounded by chairs in a meeting room.'
               />
-              <figcaption className='figure-caption'>
-                Credit: Siyuan Zhang, Winchester Thurston School.
-              </figcaption>
             </figure>
             <h2>
               Who are <em>we</em>?
             </h2>
             <p>
-              We use the word &ldquo;we&rdquo; to refer to not only the creator
-              of this platform, but also everyone who supported the development
-              of our services. In order to make our services as helpful and
-              friendly as possible, we have consulted experts and professionals
-              in disciplines from special education to entertainment technology.
-              The word &ldquo;we&rdquo; embodies the collective effort of all
-              those people who wish for a better, more inclusive education
-              environment for the future generations.
+              We use the word “we” to refer to not only the creator of this
+              platform but also everyone who supported the development of our
+              services. In order to make our services as helpful and friendly as
+              possible, we have consulted experts and professionals in
+              disciplines from special education to entertainment technology.
+              The word “we” embodies the collective effort of all those people
+              who wish for a better, more inclusive learning environment for
+              future generations.
             </p>
           </div>
           <div className={styles.promo}>

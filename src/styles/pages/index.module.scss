@@ -108,6 +108,8 @@
 
       p {
         font-size: 1.5rem;
+        hyphens: auto;
+        text-align: justify;
 
         @include media-breakpoint-down(lg) {
           font-size: 1.15rem;
@@ -125,6 +127,8 @@
           margin-bottom: $fig_margin * 0.75;
 
           @include media-breakpoint-up(sm) {
+            margin-bottom: 0;
+
             &[class*="-start"] {
               margin-right: $fig_margin;
             }
@@ -141,7 +145,7 @@
 
         img {
           max-width: 100%;
-          margin-bottom: 1rem;
+          margin: 0.5rem 0 1rem;
 
           @include media-breakpoint-up(sm) {
             margin-bottom: 0;
