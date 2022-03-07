@@ -156,9 +156,38 @@ const Register = ({
     e.preventDefault()
     setLoading(true)
     const form = new FormData(e.currentTarget)
+
+    const formObj = Array.from(form.entries()).reduce<NodeJS.Dict<string>>(
+      (o, [key, value]) => {
+        if (typeof value === 'string') o[key] = value
+        return o
+      },
+      {}
+    )
+
+    let error: string | undefined
+    if (
+      formObj['password'] !== undefined &&
+      !formObj['password'].match($0.regex.password)
+    ) {
+      error = `Password must contain at least 8 characters, 1 uppercase letter, and 1 lowercase letter.`
+    } else if (
+      formObj['password'] !== undefined &&
+      formObj['confirmation'] !== undefined &&
+      formObj['password'] !== formObj['confirmation']
+    ) {
+      error = `Password confirmation does not match.`
+    }
+
+    if (error) {
+      setMessage(error)
+      setLoading(false)
+      return
+    }
+
     $0.fetch($0.api.auth.register, {
       method: 'POST',
-      body: JSON.stringify(Object.fromEntries(form)),
+      body: JSON.stringify(formObj),
     })
       .then(async () => {
         await mutate($0.api.user.get)
@@ -313,7 +342,6 @@ const Register = ({
                 type='password'
                 placeholder='New Password'
                 autoComplete='off'
-                pattern={$0.regex.password.source}
               />
               <input
                 required

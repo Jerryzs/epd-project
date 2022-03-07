@@ -68,7 +68,7 @@ const handler = async (
       return res.status(400).json({
         success: false,
         message:
-          'Password must be at least 8 characters and contain at least 1 upper case letter and 1 lower case letter',
+          'Password must contain at least 8 characters, 1 uppercase letter, and 1 lowercase letter.',
         data: null,
       })
     }
