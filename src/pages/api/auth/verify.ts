@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import EMAIL_PLAIN from '../../../templates/api/auth/verify/email.txt'
 import EMAIL_HTML from '../../../templates/api/auth/verify/email.html'
 
-const SUBJECT = 'MyTasks Verification Code'
+const SUBJECT = 'MyTasks Verification Code - %s'
 
 const EXPIRY_TIME = 305
 const RETRY_AFTER = 90
@@ -81,7 +81,7 @@ const handler = async (
       await transporter.sendMail({
         from: process.env.MAIL_FROM,
         to: email,
-        subject: SUBJECT,
+        subject: SUBJECT.replace('%s', code),
         text: EMAIL_PLAIN.replace('%s', code),
         html: EMAIL_HTML.replace('%s', code),
       })
