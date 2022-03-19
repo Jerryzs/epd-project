@@ -35,8 +35,20 @@ const handler = async (
       })
     }
 
-    const code = $0.getRandomId(6, '1234567890')
+    const check = await db.query<unknown[]>(
+      'SELECT 1 FROM `user` WHERE `email` = ?',
+      [email]
+    )
 
+    if (check.length) {
+      return res.status(400).json({
+        success: false,
+        message: 'This email address has already been used.',
+        data: null,
+      })
+    }
+
+    const code = $0.getRandomId(6, '1234567890')
     const now = () => Math.floor(Date.now() / 1000)
 
     try {
