@@ -37,7 +37,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/bootstrap": "^5.2.4",
     "@types/mailcheck": "^1.1.33",
-    "@types/nodemailer": "^6.4.5",
+    "@types/nodemailer": "^6.4.6",
     "@types/react": "^17.0.43",
     "@types/sortablejs": "^1.13.0",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
