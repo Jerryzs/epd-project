@@ -39,7 +39,7 @@
     "@types/mailcheck": "^1.1.33",
     "@types/nodemailer": "^6.4.6",
     "@types/react": "^17.0.43",
-    "@types/sortablejs": "^1.13.0",
+    "@types/sortablejs": "^1.15.0",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "eslint": "^8.23.1",
     "eslint-config-next": "^12.3.0",
