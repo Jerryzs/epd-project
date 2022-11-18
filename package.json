@@ -14,7 +14,7 @@
     "@popperjs/core": "^2.11.6",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.1",
-    "bootstrap-icons": "^1.9.1",
+    "bootstrap-icons": "^1.10.2",
     "fast-json-stable-stringify": "^2.1.0",
     "mailcheck": "^1.1.1",
     "next": "^12.3.1",
