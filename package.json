@@ -38,7 +38,7 @@
     "@types/bootstrap": "^5.2.6",
     "@types/mailcheck": "^1.1.33",
     "@types/nodemailer": "^6.4.6",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.26",
     "@types/sortablejs": "^1.15.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "eslint": "^8.28.0",
