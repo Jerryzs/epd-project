@@ -21,7 +21,7 @@
     "next-seo": "^5.15.0",
     "nodemailer": "^6.9.1",
     "react": "^18.2.0",
-    "react-content-loader": "^6.2.0",
+    "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
     "react-sortablejs": "^6.1.4",
     "sass": "^1.58.3",
